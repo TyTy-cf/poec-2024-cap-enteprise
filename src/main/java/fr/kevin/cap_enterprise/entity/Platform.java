@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class BusinessModel {
+public class Platform {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class BusinessModel {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "businessModel")
+    @ManyToMany(mappedBy = "platforms")
     private List<Game> games = new ArrayList<>();
 
 }

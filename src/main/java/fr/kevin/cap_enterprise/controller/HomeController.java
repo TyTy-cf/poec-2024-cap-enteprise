@@ -28,7 +28,7 @@ public class HomeController {
     @GetMapping(value = UrlRoute.URL_LOGIN)
     public ModelAndView login(ModelAndView mav, String error) {
         if (error != null) {
-            mav.addObject("error", "Your username or password is invalid.");
+            mav.addObject("error", "Identifiants sont incorrects !");
         }
         mav.setViewName("security/login");
         return mav;

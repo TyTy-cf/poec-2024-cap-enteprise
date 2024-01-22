@@ -31,14 +31,13 @@ public class UserService implements DAOServiceInterface<User>, UserDetailsServic
         return null;
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByNickname(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
+                user.getNickname(),
                 user.getPassword(),
                 userGrantedAuthority(user)
         );
@@ -50,4 +49,5 @@ public class UserService implements DAOServiceInterface<User>, UserDetailsServic
         }
         return List.of(new SimpleGrantedAuthority("ROLE_GAMER"));
     }
+
 }

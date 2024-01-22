@@ -6,15 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
-public class BusinessModel {
+public class Publisher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +19,5 @@ public class BusinessModel {
 
     @Column(nullable = false)
     private String name;
-
-    @OneToMany(mappedBy = "businessModel")
-    private List<Game> games = new ArrayList<>();
 
 }

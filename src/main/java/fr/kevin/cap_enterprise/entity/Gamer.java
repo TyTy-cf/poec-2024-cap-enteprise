@@ -8,7 +8,9 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,5 +21,8 @@ import java.util.Collection;
 public class Gamer extends User {
 
     private LocalDate birthAt;
+
+    @OneToMany(mappedBy = "gamer")
+    private List<Review> reviews = new ArrayList<>();
 
 }

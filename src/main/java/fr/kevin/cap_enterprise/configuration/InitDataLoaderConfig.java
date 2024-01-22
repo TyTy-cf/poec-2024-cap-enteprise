@@ -25,11 +25,11 @@ public class InitDataLoaderConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        createUser();
+        createUsers();
         createBusinessModels();
     }
 
-    private void createUser() {
+    private void createUsers() {
         Moderator modo = new Moderator();
         modo.setId(1L);
         modo.setEmail("toto@gmail.com");
