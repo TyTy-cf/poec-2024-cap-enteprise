@@ -1,5 +1,6 @@
 package fr.kevin.cap_enterprise.entity;
 
+import fr.kevin.cap_enterprise.entity.interfaces.SluggerInterface;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,13 +17,13 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Game {
+public class Game implements SluggerInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @Column(nullable = false)
@@ -33,6 +34,8 @@ public class Game {
 
     @Column(nullable = false)
     private String name;
+
+    private String slug;
 
     @OneToMany(mappedBy = "game")
     private List<Review> reviews = new ArrayList<>();
@@ -60,4 +63,14 @@ public class Game {
     @JoinColumn(nullable = false)
     private Publisher publisher;
 
+    public void addPlatform(Platform platform) {
+        if (!platforms.contains(platform)) {
+            platforms.add(platform);
+        }
+    }
+
+    @Override
+    public String getField() {
+        return name;
+    }
 }

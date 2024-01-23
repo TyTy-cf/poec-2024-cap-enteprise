@@ -24,7 +24,7 @@ public class Review {
     @Column(nullable = false)
     private Float rating;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @CreationTimestamp

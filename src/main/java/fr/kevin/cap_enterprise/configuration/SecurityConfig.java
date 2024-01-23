@@ -1,5 +1,6 @@
 package fr.kevin.cap_enterprise.configuration;
 
+import fr.kevin.cap_enterprise.mapping.UrlRoute;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,8 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth ->
                 auth
+                    .requestMatchers(UrlRoute.URL_GAME + "/**").authenticated()
+                    .requestMatchers(UrlRoute.URL_REVIEW + "/**").authenticated()
                     .requestMatchers("/**").permitAll()
             )
             .formLogin(formLogin ->

@@ -93,6 +93,13 @@
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>6.1.2</version>
 		</dependency>
+
+		<!-- Dépendance pour Faker -->
+		<dependency>
+			<groupId>com.github.javafaker</groupId>
+			<artifactId>javafaker</artifactId>
+			<version>1.0.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
