@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -19,5 +22,8 @@ public class Publisher {
 
     @Column(nullable = false)
     private String name;
+
+    @OneToMany(mappedBy = "publisher")
+    private List<Game> games = new ArrayList<>();
 
 }

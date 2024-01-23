@@ -56,4 +56,8 @@ public class Game {
     @JoinColumn(nullable = false)
     private Moderator moderator;
 
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Publisher publisher;
+
 }
