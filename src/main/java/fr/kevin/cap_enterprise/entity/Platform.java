@@ -1,5 +1,7 @@
 package fr.kevin.cap_enterprise.entity;
 
+import fr.kevin.cap_enterprise.entity.interfaces.NomenclatureInterface;
+import fr.kevin.cap_enterprise.entity.interfaces.SluggerInterface;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +16,10 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Platform {
+public class Platform implements
+        SluggerInterface,
+        NomenclatureInterface
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +28,13 @@ public class Platform {
     @Column(nullable = false)
     private String name;
 
+    private String slug;
+
     @ManyToMany(mappedBy = "platforms")
     private List<Game> games = new ArrayList<>();
 
+    @Override
+    public String getField() {
+        return name;
+    }
 }
