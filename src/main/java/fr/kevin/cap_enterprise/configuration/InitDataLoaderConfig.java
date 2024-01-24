@@ -135,9 +135,9 @@ public class InitDataLoaderConfig implements CommandLineRunner {
                 LocalDate localDate = new java.sql.Date(faker.date().birthday(2, 25).getTime()).toLocalDate();
                 game.setPublishedAt(localDate);
                 Random rand = new Random();
-                game.setModerator((Moderator) userService.findById(rand.nextLong(5 - 1) + 1));
+                game.setModerator((Moderator) userService.findById(rand.nextLong(6 - 1) + 1));
                 game.setBusinessModel(businessModelService.findById(businessModels.get(i)));
-                game.setClassification(classificationService.findById(rand.nextLong(3 - 1) + 1));
+                game.setClassification(classificationService.findById(rand.nextLong(4 - 1) + 1));
                 game.setPublisher(publisherService.findById(publishers.get(i)));
                 game.setGenre(genreService.findById(genres.get(i)));
                 game.addPlatform(platformService.findById(platforms.get(i)));
@@ -154,12 +154,18 @@ public class InitDataLoaderConfig implements CommandLineRunner {
             Random rand = new Random();
             LocalDateTime localDate = new java.sql.Date(faker.date().birthday(0, 2).getTime()).toLocalDate().atTime(0, 0);
             review.setCreatedAt(localDate);
-            review.setRating((float) rand.nextLong(20));
-            review.setGamer((Gamer) userService.findById(rand.nextLong(200 - 6) + 6));
-            review.setGame(gameService.findById(rand.nextLong(21 - 1) + 1));
-            review.setDescription(faker.chuckNorris().fact() + "</br>" + faker.lorem().paragraph(3));
+            review.setGamer((Gamer) userService.findById(rand.nextLong(201 - 6) + 6));
+            review.setGame(gameService.findById(rand.nextLong(22 - 1) + 1));
+            float rating = (float) rand.nextLong(21 - 2) + 2;
+            if (review.getGame().getId().equals(9L)) {
+                rating = (float) rand.nextLong(3);
+            } else if (review.getGame().getId().equals(6L) || review.getGame().getId().equals(1L)) {
+                rating = (float) rand.nextLong(21 - 10) + 10;
+            }
+            review.setRating(rating);
+            review.setDescription("<strong>" + faker.chuckNorris().fact() + "</strong></br></br>" + faker.lorem().paragraph(3));
             if (i%5 != 0) {
-                review.setModerator((Moderator) userService.findById(rand.nextLong(5 - 1) + 1));
+                review.setModerator((Moderator) userService.findById(rand.nextLong(6 - 1) + 1));
                 review.setModeratedAt(LocalDateTime.now());
             }
             reviewRepository.save(review);

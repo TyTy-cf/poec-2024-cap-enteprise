@@ -9,19 +9,23 @@
 <%-- Imports nécessaires pour récupérer le UserService dans les JSP --%>
 <%@ page import="org.springframework.web.servlet.support.RequestContextUtils" %>
 <%@ page import="org.springframework.web.context.WebApplicationContext" %>
+<%@ page import="fr.kevin.cap_enterprise.utils.DateUtils" %>
+<%@ page import="fr.kevin.cap_enterprise.utils.JspUtils" %>
 <%--<%@ page import="fr.poec.springboot.instant_faking.service.UserService" %>--%>
 <%--<%@ page import="fr.poec.springboot.instant_faking.entity.User" %>--%>
 
 <%--&lt;%&ndash; Renomme de manière plus simple le "pageContext.request.contextPath" &ndash;%&gt;--%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
-<%--<%--%>
-<%--    WebApplicationContext ctx = RequestContextUtils.findWebApplicationContext(request);--%>
-<%--    if (ctx != null) {--%>
-<%--        UserService userService = ctx.getBean(UserService.class);--%>
-<%--        if (request.getUserPrincipal() != null) {--%>
-<%--            User user = userService.findByEmail(request.getUserPrincipal().getName());--%>
-<%--            request.setAttribute("userLogged", user);--%>
-<%--        }--%>
-<%--    }--%>
-<%--%>--%>
+<%
+    WebApplicationContext ctx = RequestContextUtils.findWebApplicationContext(request);
+    if (ctx != null) {
+        request.setAttribute("dateUtils", ctx.getBean(DateUtils.class));
+        request.setAttribute("jspUtils", ctx.getBean(JspUtils.class));
+//        UserService userService = ctx.getBean(UserService.class);
+//        if (request.getUserPrincipal() != null) {
+//            User user = userService.findByEmail(request.getUserPrincipal().getName());
+//            request.setAttribute("userLogged", user);
+//        }
+    }
+%>

@@ -30,10 +30,14 @@ public class UserService implements
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    public User findByNickname(String nickname) {
+        return userRepository.findByNickname(nickname)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByNickname(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = findByNickname(username);
 
         return new org.springframework.security.core.userdetails.User(
                 user.getNickname(),
