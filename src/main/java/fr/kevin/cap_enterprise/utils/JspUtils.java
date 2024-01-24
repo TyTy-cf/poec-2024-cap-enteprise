@@ -1,8 +1,10 @@
 package fr.kevin.cap_enterprise.utils;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class JspUtils {
 
     public String excerpt(String text, int size) {

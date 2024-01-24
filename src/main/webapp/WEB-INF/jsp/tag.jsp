@@ -11,6 +11,8 @@
 <%@ page import="org.springframework.web.context.WebApplicationContext" %>
 <%@ page import="fr.kevin.cap_enterprise.utils.DateUtils" %>
 <%@ page import="fr.kevin.cap_enterprise.utils.JspUtils" %>
+<%@ page import="org.springframework.http.server.ServletServerHttpRequest" %>
+<%@ page import="org.springframework.web.util.UriComponentsBuilder" %>
 <%--<%@ page import="fr.poec.springboot.instant_faking.service.UserService" %>--%>
 <%--<%@ page import="fr.poec.springboot.instant_faking.entity.User" %>--%>
 
@@ -18,6 +20,12 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <%
+    String path = request.getAttribute(RequestDispatcher.FORWARD_REQUEST_URI).toString();
+    Object query = request.getAttribute(RequestDispatcher.FORWARD_QUERY_STRING);
+    if (query != null) {
+        path += "?" + query;
+    }
+    request.setAttribute("currentUrl", path);
     WebApplicationContext ctx = RequestContextUtils.findWebApplicationContext(request);
     if (ctx != null) {
         request.setAttribute("dateUtils", ctx.getBean(DateUtils.class));

@@ -4,8 +4,25 @@
 <jsp:include flush="true" page="${contextPath}/WEB-INF/jsp/base.jsp"/>
 
 <div class="container">
+    <div class="d-flex justify-content-between">
+        <div class="sort-filter d-flex mt-4">
+            Date
+            <div class="ms-1 row">
+                <a href="<s:url value="${currentUrl}&sort=createdAt&direction=asc"/>">
+                    <i class="fa-solid fa-sort-up"></i>
+                </a>
+                <a href="<s:url value="${currentUrl}&sort=createdAt&direction=desc"/>">
+                    <i class="fa-solid fa-sort-down"></i>
+                </a>
+            </div>
+        </div>
+        <div>
+            <p>
+                page ${pageReviews.number + 1} sur ${pageReviews.totalPages}
+            </p>
+        </div>
+    </div>
     <div class="row">
-        <p class="d-flex justify-content-end mt-4">page ${pageReviews.number + 1} sur ${pageReviews.totalPages}</p>
         <c:forEach items="${pageReviews.content}" var="review">
             <div class="col-lg-4 col-md-6 col-sm-12 mt-4">
                 <div class="main-review-card w-100">
@@ -31,7 +48,6 @@
         </c:forEach>
     </div>
     <c:set var="page" scope="request" value="${pageReviews}"/>
-    <c:set var="url" scope="request" value="/"/>
     <%@ include file="component/pagination.jsp" %>
 
 </div>
