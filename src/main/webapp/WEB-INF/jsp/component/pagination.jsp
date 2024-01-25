@@ -4,23 +4,27 @@
 <div class="navigation d-flex justify-content-center my-4">
     <div class="pagination">
         <core:if test="${!page.first}">
-            <a class="first" href="${currentUrl}">
+            <core:set var="firstPage" value="page=1"/>
+            <a class="first" href="${jspUtils.generateUrlFrom(currentUrl, currentQuery, firstPage)}">
                 &lt;&lt;
             </a>
         </core:if>
         <core:if test="${page.hasPrevious()}">
-            <a class="previous" rel="prev" href="${currentUrl}?page=${currentPage - 1}">
+            <core:set var="previousPage" value="page=${(currentPage - 1)}"/>
+            <a class="previous" rel="prev" href="${jspUtils.generateUrlFrom(currentUrl, currentQuery, previousPage)}">
                 &lt;
             </a>
         </core:if>
         <span class="current">${currentPage}</span>
         <core:if test="${page.hasNext()}">
-            <a class="next" href="${currentUrl}?page=${currentPage + 1}">
+            <core:set var="nextPage" value="page=${(currentPage + 1)}"/>
+            <a class="next" href="${jspUtils.generateUrlFrom(currentUrl, currentQuery, nextPage)}">
                 &gt;
             </a>
         </core:if>
         <core:if test="${!page.last}">
-            <a class="last" href="${currentUrl}?page=${page.totalPages}">
+            <core:set var="lastPage" value="page=${page.totalPages}"/>
+            <a class="last" href="${jspUtils.generateUrlFrom(currentUrl, currentQuery, lastPage)}">
                 &gt;&gt;
             </a>
         </core:if>

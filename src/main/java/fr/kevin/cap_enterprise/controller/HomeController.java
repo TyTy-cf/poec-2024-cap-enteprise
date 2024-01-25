@@ -1,10 +1,8 @@
 package fr.kevin.cap_enterprise.controller;
 
 import fr.kevin.cap_enterprise.mapping.UrlRoute;
-import fr.kevin.cap_enterprise.repository.ReviewRepository;
 import fr.kevin.cap_enterprise.service.ReviewService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -39,7 +37,7 @@ public class HomeController {
         return mav;
     }
 
-    @GetMapping(value = UrlRoute.URL_LOGIN)
+    @GetMapping(UrlRoute.URL_LOGIN)
     public ModelAndView login(ModelAndView mav, String error) {
         if (error != null) {
             mav.addObject("error", "Identifiants sont incorrects !");

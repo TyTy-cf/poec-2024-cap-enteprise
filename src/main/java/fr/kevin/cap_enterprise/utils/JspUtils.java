@@ -2,6 +2,7 @@ package fr.kevin.cap_enterprise.utils;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 @AllArgsConstructor
@@ -22,6 +23,33 @@ public class JspUtils {
 
     public String getStringRating(float rating) {
         return ("" + rating).replace(".0", "");
+    }
+
+    public String generateUrlFrom(
+        String currentUrl,
+        String... addQueryParams
+    ) {
+        System.out.println("Previous query params : " + addQueryParams[0]);
+        UriComponentsBuilder url = UriComponentsBuilder.fromHttpUrl(currentUrl);
+        for (String queryParam : addQueryParams) {
+            if (!queryParam.isEmpty()) {
+                if (queryParam.contains("&")) { // existing old query param
+                    String[] oldQueryParams = queryParam.split("&");
+                    for (String oldQueryParamSplit : oldQueryParams) {
+                        String[] parsed = oldQueryParamSplit.split("=");
+                        url = addQueryParam(url, parsed[0], parsed[1]);
+                    }
+                } else {
+                    String[] parsed = queryParam.split("=");
+                    url = addQueryParam(url, parsed[0], parsed[1]);
+                }
+            }
+        }
+        return url.toUriString();
+    }
+
+    private UriComponentsBuilder addQueryParam(UriComponentsBuilder uri, String queryParamName, String queryParamValue) {
+        return uri.replaceQueryParam(queryParamName, queryParamValue);
     }
 
 }

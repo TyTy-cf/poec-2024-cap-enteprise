@@ -23,7 +23,7 @@ public class SecurityConfig {
             )
             .formLogin(formLogin ->
                 formLogin
-                    .loginPage("/login")
+                    .loginPage(UrlRoute.URL_LOGIN)
                     .permitAll()
             )
             .logout(LogoutConfigurer::permitAll);

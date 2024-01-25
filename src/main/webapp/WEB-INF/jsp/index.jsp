@@ -8,10 +8,10 @@
         <div class="sort-filter d-flex mt-4">
             Date
             <div class="ms-1 row">
-                <a href="<s:url value="${currentUrl}&sort=createdAt&direction=asc"/>">
+                <a href="${jspUtils.generateUrlFrom(currentUrl, currentQuery, "sort=createdAt", "direction=asc")}">
                     <i class="fa-solid fa-sort-up"></i>
                 </a>
-                <a href="<s:url value="${currentUrl}&sort=createdAt&direction=desc"/>">
+                <a href="${jspUtils.generateUrlFrom(currentUrl, currentQuery, "sort=createdAt", "direction=desc")}">
                     <i class="fa-solid fa-sort-down"></i>
                 </a>
             </div>
