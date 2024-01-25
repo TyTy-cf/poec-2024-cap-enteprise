@@ -30,6 +30,7 @@
     request.setAttribute("currentQuery", queryString);
     request.setAttribute("currentPath", path);
     request.setAttribute("currentUrl", url + path);
+
     WebApplicationContext ctx = RequestContextUtils.findWebApplicationContext(request);
     if (ctx != null) {
         request.setAttribute("dateUtils", ctx.getBean(DateUtils.class));

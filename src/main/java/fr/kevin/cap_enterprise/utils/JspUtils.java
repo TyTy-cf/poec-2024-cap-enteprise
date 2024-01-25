@@ -25,13 +25,25 @@ public class JspUtils {
         return ("" + rating).replace(".0", "");
     }
 
+    /**
+     * Génère une URL, à partir d'une URL contenant, possiblement, des query Param
+     * et les nouveaux query params
+     *
+     * @param currentUrl, l'URL de la page courante (le path !)
+     * @param addQueryParams, les paramètres de requêtes à ajouter
+     * @return la requête formattée correctement avec les anciens et nouveaux query params
+     */
     public String generateUrlFrom(
         String currentUrl,
         String... addQueryParams
     ) {
-        System.out.println("Previous query params : " + addQueryParams[0]);
+    // String... :  la méthode prend autant de paramètres de type String que voulu
+    // Et les ajoute automatiquement dans une Liste
         UriComponentsBuilder url = UriComponentsBuilder.fromHttpUrl(currentUrl);
+        System.out.println("Generation d'URL...");
+        System.out.println("- URL actuelle : " + currentUrl);
         for (String queryParam : addQueryParams) {
+            System.out.println("- Query param : " + queryParam);
             if (!queryParam.isEmpty()) {
                 if (queryParam.contains("&")) { // existing old query param
                     String[] oldQueryParams = queryParam.split("&");
@@ -45,7 +57,9 @@ public class JspUtils {
                 }
             }
         }
-        return url.toUriString();
+        String urlOut = url.toUriString();
+        System.out.println("- URL en sortie : " + urlOut);
+        return urlOut;
     }
 
     private UriComponentsBuilder addQueryParam(UriComponentsBuilder uri, String queryParamName, String queryParamValue) {

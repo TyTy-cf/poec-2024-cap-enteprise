@@ -5,21 +5,35 @@
 
 <div class="container">
     <div class="d-flex justify-content-between">
-        <div class="sort-filter d-flex mt-4">
-            Date
-            <div class="ms-1 row">
-                <a href="${jspUtils.generateUrlFrom(currentUrl, currentQuery, "sort=createdAt", "direction=asc")}">
-                    <i class="fa-solid fa-sort-up"></i>
+        <div class="d-flex">
+            <!-- Label à afficher -->
+            <c:set var="label" scope="request" value="Date"/>
+            <!-- Sur quelle propriété de l'objet on souhaite trier -->
+            <c:set var="sortable" value="createdAt"/>
+            <%@ include file="component/sortable.jsp" %>
+
+            <c:set var="label" scope="request" value="Note"/>
+            <c:set var="sortable" value="rating"/>
+            <%@ include file="component/sortable.jsp" %>
+
+            <c:set var="label" scope="request" value="Jeu"/>
+            <c:set var="sortable" value="game.name"/>
+            <%@ include file="component/sortable.jsp" %>
+
+            <c:set var="label" scope="request" value="Joueur"/>
+            <c:set var="sortable" value="gamer.nickname"/>
+            <%@ include file="component/sortable.jsp" %>
+
+            <span class="mt-auto mb-2">
+                <a href="${currentUrl}" class="btn-link">
+                    Reset
                 </a>
-                <a href="${jspUtils.generateUrlFrom(currentUrl, currentQuery, "sort=createdAt", "direction=desc")}">
-                    <i class="fa-solid fa-sort-down"></i>
-                </a>
-            </div>
+            </span>
         </div>
-        <div>
-            <p>
+        <div  class="mt-auto mb-2">
+            <span>
                 page ${pageReviews.number + 1} sur ${pageReviews.totalPages}
-            </p>
+            </span>
         </div>
     </div>
     <div class="row">
@@ -29,6 +43,9 @@
                     <p class="text-center">
                         Le ${dateUtils.getDateFormat(review.createdAt, "dd/MM/yyyy")}
                         par <a class="btn-link" href="#">${review.gamer.nickname}</a>
+                        <c:if test="${review.moderator != null}">
+                            <i class="fa-solid fa-check"></i>
+                        </c:if>
                     </p>
                     <div class="review-card w-100">
                         <p class="review-description">
