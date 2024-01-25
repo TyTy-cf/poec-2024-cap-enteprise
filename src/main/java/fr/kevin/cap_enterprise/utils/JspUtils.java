@@ -41,9 +41,9 @@ public class JspUtils {
     // Et les ajoute automatiquement dans une Liste
         UriComponentsBuilder url = UriComponentsBuilder.fromHttpUrl(currentUrl);
         System.out.println("Generation d'URL...");
-        System.out.println("- URL actuelle : " + currentUrl);
+        System.out.println("- URL actuelle  : " + currentUrl);
         for (String queryParam : addQueryParams) {
-            System.out.println("- Query param : " + queryParam);
+            System.out.println("- Query param  : " + queryParam);
             if (!queryParam.isEmpty()) {
                 if (queryParam.contains("&")) { // existing old query param
                     String[] oldQueryParams = queryParam.split("&");
@@ -64,7 +64,7 @@ public class JspUtils {
 
     private UriComponentsBuilder addQueryParam(UriComponentsBuilder uri, String queryParamName, String queryParamValue) {
         if (queryParamName.equals("sort") &&
-            !uri.toUriString().contains(queryParamValue.split(",")[0])
+            !uri.toUriString().contains("sort=" + queryParamValue.split(",")[0] + ",")
         ) {
             return uri.queryParam(queryParamName, queryParamValue);
         }

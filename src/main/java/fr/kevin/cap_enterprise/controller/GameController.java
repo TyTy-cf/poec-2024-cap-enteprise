@@ -1,38 +1,40 @@
 package fr.kevin.cap_enterprise.controller;
 
-import fr.kevin.cap_enterprise.service.ReviewService;
+import fr.kevin.cap_enterprise.mapping.UrlRoute;
+import fr.kevin.cap_enterprise.service.GameService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.security.Principal;
 
 @Controller
 @AllArgsConstructor
-public class HomeController {
+public class GameController {
 
-    private ReviewService reviewService;
+    private GameService gameService;
 
-    @GetMapping("/")
+    @GetMapping(UrlRoute.URL_GAME)
     public ModelAndView index(
             ModelAndView mav,
-            Principal principal,
             @PageableDefault(
                 size = 6, // nb Element par page
-                sort = { "createdAt" }, // order by
+                sort = { "publishedAt" }, // order by
                 direction = Sort.Direction.DESC
             ) Pageable pageable
     ) {
-        if (principal == null) {
-            mav.setViewName("redirect:/login");
-            return mav;
-        }
-        mav.addObject("pageReviews", reviewService.findAll(pageable));
-        mav.setViewName("index");
+        mav.setViewName("game/index");
+        mav.addObject("pageGames", gameService.findAll(pageable));
+        return mav;
+    }
+
+    @GetMapping(UrlRoute.URL_GAME_ID)
+    public ModelAndView show(@PathVariable Long id, ModelAndView mav) {
+        mav.setViewName("game/show");
+        mav.addObject("game", gameService.findById(id));
         return mav;
     }
 
