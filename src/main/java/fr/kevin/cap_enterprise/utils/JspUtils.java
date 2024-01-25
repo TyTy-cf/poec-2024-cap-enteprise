@@ -63,6 +63,11 @@ public class JspUtils {
     }
 
     private UriComponentsBuilder addQueryParam(UriComponentsBuilder uri, String queryParamName, String queryParamValue) {
+        if (queryParamName.equals("sort") &&
+            !uri.toUriString().contains(queryParamValue.split(",")[0])
+        ) {
+            return uri.queryParam(queryParamName, queryParamValue);
+        }
         return uri.replaceQueryParam(queryParamName, queryParamValue);
     }
 
