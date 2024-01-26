@@ -31,7 +31,7 @@ public class ExcelReviewService {
         File serverFile = new File(dir.getAbsolutePath() + File.separator + fileName);
         try (OutputStream os = new FileOutputStream(serverFile)) {
             Workbook wb = new Workbook(os, "Export-Avis", "1.0");
-            Worksheet ws = wb.newWorksheet("Avis");
+            Worksheet ws = wb.newWorksheet("Avis"); // La feuille à l'intérieur de l'excel
 
             ws.value(0, 0, "Date d'envoi");
             ws.value(0, 1, "Jeu");

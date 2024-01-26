@@ -66,7 +66,8 @@
     </div>
     <div>
         <a href="${UrlRoute.URL_EXPORT}" class="btn btn-link">
-            Excel
+            <i class="fa-solid fa-file-excel me-1"></i>
+            Télécharger export Excel
         </a>
     </div>
     <c:set var="page" scope="request" value="${pageReviews}"/>

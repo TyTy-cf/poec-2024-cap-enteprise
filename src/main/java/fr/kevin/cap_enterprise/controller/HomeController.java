@@ -49,7 +49,7 @@ public class HomeController {
     }
 
     @GetMapping(UrlRoute.URL_EXPORT)
-    public void exportToExcel(HttpServletResponse response) {
+    public void downloadExcel(HttpServletResponse response) {
         try {
             File file = excelService.writeExcel();
             ByteArrayInputStream excelToByte = new ByteArrayInputStream(
@@ -57,8 +57,7 @@ public class HomeController {
             );
             response.setContentType("application/vnd.ms-excel");
             response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
-            ServletOutputStream outputStream = response.getOutputStream();
-            IOUtils.copy(excelToByte, outputStream);
+            IOUtils.copy(excelToByte, response.getOutputStream());
             response.flushBuffer();
         } catch (IOException e) {
             System.out.println(e.getMessage());
