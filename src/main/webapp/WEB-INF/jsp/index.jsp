@@ -64,6 +64,11 @@
             </div>
         </c:forEach>
     </div>
+    <div>
+        <a href="${UrlRoute.URL_EXPORT}" class="btn btn-link">
+            Excel
+        </a>
+    </div>
     <c:set var="page" scope="request" value="${pageReviews}"/>
     <%@ include file="component/pagination.jsp" %>
 
