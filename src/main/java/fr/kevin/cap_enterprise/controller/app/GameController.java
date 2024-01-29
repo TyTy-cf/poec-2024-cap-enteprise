@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -46,6 +47,7 @@ public class GameController {
         @PathVariable String slug,
         ModelAndView mav,
         Principal principal,
+        @ModelAttribute("reviewFormMessage") String reviewFormMessage,
         @PageableDefault(
             size = 6, // nb Element par page
             sort = { "createdAt" }, // order by
@@ -57,6 +59,7 @@ public class GameController {
             mav.addObject("reviewDto", new ReviewDTO());
         }
         Game game = gameService.findBySlug(slug);
+        mav.addObject("formMessage", reviewFormMessage);
         mav.addObject("game", game);
         mav.addObject("pageReviews", reviewService.findAllByGame(game, pageable));
         return mav;
@@ -68,7 +71,8 @@ public class GameController {
             ModelAndView mav,
             Principal principal,
             @ModelAttribute("reviewDto") ReviewDTO reviewDTO,
-            BindingResult result
+            BindingResult result,
+            RedirectAttributes redirectAttributes
     ) {
         if (result.hasErrors()) {
             mav.setViewName("game/show");
@@ -79,6 +83,7 @@ public class GameController {
             gameService.findBySlug(slug),
             principal.getName()
         );
+        redirectAttributes.addFlashAttribute("reviewFormMessage", "Votre commentaire a bien été enregistré, il est actuellement en attente de modération !");
         mav.setViewName("redirect:" + UrlRoute.URL_GAME + "/" + slug);
         return mav;
     }

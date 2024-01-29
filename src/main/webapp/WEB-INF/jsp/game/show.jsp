@@ -12,6 +12,11 @@
             <li class="breadcrumb-item active"><a class="btn-link" href="#game-reviews">Les commentaires</a></li>
         </ol>
     </nav>
+    <c:if test="${!reviewFormMessage.equals('')}">
+        <div class="alert alert-success">
+            ${reviewFormMessage}
+        </div>
+    </c:if>
     <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="container-img p-3">

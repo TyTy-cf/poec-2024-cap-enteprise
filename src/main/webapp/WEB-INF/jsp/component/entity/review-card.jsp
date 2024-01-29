@@ -5,10 +5,10 @@
         Le ${dateUtils.getDateFormat(review.createdAt, "dd/MM/yyyy")}
         par <a class="btn-link" href="${UrlRoute.URL_USER}/${userLogged.uuid}">${review.gamer.nickname}</a>
         <c:if test="${review.moderator != null}">
-            <i class="fa-solid fa-circle-check rating-20"></i>
+            <i class="fa-solid fa-circle-check rating-20" title="Commentaire modéré"></i>
         </c:if>
         <c:if test="${review.moderator == null}">
-            <i class="fa-solid fa-circle-xmark rating-5"></i>
+            <i class="fa-solid fa-circle-xmark rating-5" title="En attente de modération..."></i>
         </c:if>
 
     </p>
