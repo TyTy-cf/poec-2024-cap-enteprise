@@ -25,8 +25,8 @@
             <%@ include file="component/sortable.jsp" %>
 
             <span class="mt-auto mb-2">
-                <a href="${currentUrl}" class="btn-link">
-                    Reset
+                <a href="${currentUrl}" class="btn-link" title="Réinitialiser les filtres">
+                    <i class="fa fa-filter-circle-xmark"></i>
                 </a>
             </span>
         </div>
@@ -39,28 +39,7 @@
     <div class="row">
         <c:forEach items="${pageReviews.content}" var="review">
             <div class="col-lg-4 col-md-6 col-sm-12 mt-4">
-                <div class="main-review-card w-100">
-                    <p class="text-center">
-                        Le ${dateUtils.getDateFormat(review.createdAt, "dd/MM/yyyy")}
-                        par <a class="btn-link" href="#">${review.gamer.nickname}</a>
-                        <c:if test="${review.moderator != null}">
-                            <i class="fa-solid fa-check"></i>
-                        </c:if>
-                    </p>
-                    <div class="review-card w-100">
-                        <p class="review-description">
-                            ${jspUtils.excerpt(review.description, 209)}
-                        </p>
-                        <div class="d-flex justify-content-between">
-                            <p class="${jspUtils.getCssClas(review.rating)}">
-                                ${jspUtils.getStringRating(review.rating)} / 20
-                            </p>
-                            <a class="btn-link" href="#">
-                                ${review.game.name}
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                <%@ include file="component/entity/review-card.jsp" %>
             </div>
         </c:forEach>
     </div>
@@ -76,3 +55,28 @@
 </div>
 
 <%@ include file="footer.jsp" %>
+
+
+<%--<div class="background-container">--%>
+<%--    <video class="w-100" id="background-video1" autoplay loop muted>--%>
+<%--        <source src="https://www.leagueoflegends.com/static/hero-3e934348790824f4b800524f96a93020.mp4" type="video/mp4">--%>
+<%--    </video>--%>
+<%--</div>--%>
+<%--<div class="container" id = "container-video">--%>
+<%--    <div class="row d-none d-sm-block d-lg-block">--%>
+<%--        <video class="w-100" id="background-video" autoplay loop muted>--%>
+<%--            <source id="background-video2" src="https://www.leagueoflegends.com/static/hero-3e934348790824f4b800524f96a93020.mp4" type="video/mp4">--%>
+<%--        </video>--%>
+<%--        <div class="position-relative">--%>
+<%--            <div class="position-absolute bottom-0 start-0"  id ="content">--%>
+<%--                <h1 class="display-3">--%>
+<%--                    <span class="fw-bold" style="color: orange;">H</span><span class="fw-bolder" style="color: #fff;">GAMES</span>--%>
+<%--                </h1>--%>
+<%--                <form class="d-flex py-2 px-2" role="search">--%>
+<%--                    <button class="btn btn-outline-success bolder btn-sm " type="submit" id ="btn-navbar">CONNEXION</button>--%>
+<%--                </form>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</div>--%>
+
