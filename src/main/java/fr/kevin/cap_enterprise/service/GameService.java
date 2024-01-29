@@ -3,6 +3,7 @@ package fr.kevin.cap_enterprise.service;
 import fr.kevin.cap_enterprise.entity.Game;
 import fr.kevin.cap_enterprise.repository.GameRepository;
 import fr.kevin.cap_enterprise.service.interfaces.DAOFindByIdInterface;
+import fr.kevin.cap_enterprise.service.interfaces.DAOFindBySlugInterface;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,10 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class GameService implements DAOFindByIdInterface<Game> {
+public class GameService implements
+        DAOFindByIdInterface<Game>,
+        DAOFindBySlugInterface<Game>
+{
 
     private GameRepository gameRepository;
 
@@ -25,5 +29,11 @@ public class GameService implements DAOFindByIdInterface<Game> {
 
     public Page<Game> findAll(Pageable pageable) {
         return gameRepository.findAll(pageable);
+    }
+
+    @Override
+    public Game findBySlug(String slug) {
+        return gameRepository.findBySlug(slug)
+                .orElseThrow(EntityNotFoundException::new);
     }
 }

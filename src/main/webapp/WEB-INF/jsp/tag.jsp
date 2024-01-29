@@ -13,6 +13,8 @@
 <%@ page import="fr.kevin.cap_enterprise.utils.JspUtils" %>
 <%@ page import="org.springframework.http.server.ServletServerHttpRequest" %>
 <%@ page import="org.springframework.web.util.UriComponentsBuilder" %>
+<%@ page import="fr.kevin.cap_enterprise.service.UserService" %>
+<%@ page import="fr.kevin.cap_enterprise.entity.User" %>
 <%--<%@ page import="fr.poec.springboot.instant_faking.service.UserService" %>--%>
 <%--<%@ page import="fr.poec.springboot.instant_faking.entity.User" %>--%>
 
@@ -35,10 +37,10 @@
     if (ctx != null) {
         request.setAttribute("dateUtils", ctx.getBean(DateUtils.class));
         request.setAttribute("jspUtils", ctx.getBean(JspUtils.class));
-//        UserService userService = ctx.getBean(UserService.class);
-//        if (request.getUserPrincipal() != null) {
-//            User user = userService.findByEmail(request.getUserPrincipal().getName());
-//            request.setAttribute("userLogged", user);
-//        }
+        UserService userService = ctx.getBean(UserService.class);
+        if (request.getUserPrincipal() != null) {
+            User user = userService.findByNickname(request.getUserPrincipal().getName());
+            request.setAttribute("userLogged", user);
+        }
     }
 %>

@@ -68,7 +68,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
 
     private void createUsers() {
         Faker faker = new Faker(Locale.of("fr"));
-        List<String> names = new ArrayList<>();
+        List<String> duplicates = new ArrayList<>();
         for (long i = 1L; i <= 200; i++) {
             if (userRepository.findById(i).isEmpty()) {
                 User user;
@@ -84,10 +84,10 @@ public class InitDataLoaderConfig implements CommandLineRunner {
                 String name;
                 do {
                     name = slugger.slugify(faker.funnyName().name().replace(" ", ""));
-                } while (names.contains(name));
-                names.add(name);
+                } while (duplicates.contains(name));
+                duplicates.add(name);
                 user.setNickname(name);
-                user.setEmail(faker.internet().safeEmailAddress());
+                user.setEmail(name + "@gmail.com");
                 user.setPassword(passwordEncoder.encode("12345"));
                 userRepository.save(user);
             }

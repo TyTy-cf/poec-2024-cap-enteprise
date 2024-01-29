@@ -30,7 +30,6 @@ public class Review {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
     private LocalDateTime moderatedAt;
 
     @ManyToOne

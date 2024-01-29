@@ -3,67 +3,48 @@
 <c:set var="title" scope="request" value="Avis"/>
 <jsp:include flush="true" page="${contextPath}/WEB-INF/jsp/base.jsp"/>
 
-<div class="container">
-    <div class="d-flex justify-content-end mt-4">
-        page ${pageGames.number + 1} sur ${pageGames.totalPages}
+<div class="container mt-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a class="btn-link" href="${contextPath}/">Accueil</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Les jeux</li>
+        </ol>
+    </nav>
+
+    <h1>Les jeux</h1>
+
+    <div class="d-flex justify-content-between">
+        <div class="d-flex">
+            <!-- Label à afficher -->
+            <c:set var="label" scope="request" value="Date"/>
+            <!-- Sur quelle propriété de l'objet on souhaite trier -->
+            <c:set var="sortable" value="publishedAt"/>
+            <%@ include file="../component/sortable.jsp" %>
+
+            <c:set var="label" scope="request" value="Name"/>
+            <c:set var="sortable" value="name"/>
+            <%@ include file="../component/sortable.jsp" %>
+
+            <c:set var="label" scope="request" value="Genre"/>
+            <c:set var="sortable" value="genre.name"/>
+            <%@ include file="../component/sortable.jsp" %>
+
+            <c:set var="label" scope="request" value="Editeur"/>
+            <c:set var="sortable" value="publisher.name"/>
+            <%@ include file="../component/sortable.jsp" %>
+
+            <%@ include file="../component/filter-reset.jsp" %>
+        </div>
+
+        <c:set var="page" scope="request" value="${pageGames}"/>
+        <%@ include file="../component/pagination-number.jsp" %>
     </div>
-
-    <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th>
-                    <!-- Label à afficher -->
-                    <c:set var="label" scope="request" value="Nom"/>
-                    <!-- Sur quelle propriété de l'objet on souhaite trier -->
-                    <c:set var="sortable" value="name"/>
-                    <%@ include file="../component/sortable.jsp" %>
-                </th>
-                <th>
-                    <!-- Label à afficher -->
-                    <c:set var="label" scope="request" value="Date"/>
-                    <!-- Sur quelle propriété de l'objet on souhaite trier -->
-                    <c:set var="sortable" value="publishedAt"/>
-                    <%@ include file="../component/sortable.jsp" %>
-                </th>
-                <th>
-                    <!-- Label à afficher -->
-                    <c:set var="label" scope="request" value="Editeur"/>
-                    <!-- Sur quelle propriété de l'objet on souhaite trier -->
-                    <c:set var="sortable" value="publisher.name"/>
-                    <%@ include file="../component/sortable.jsp" %>
-                </th>
-                <th>
-                    <!-- Label à afficher -->
-                    <c:set var="label" scope="request" value="Genre"/>
-                    <!-- Sur quelle propriété de l'objet on souhaite trier -->
-                    <c:set var="sortable" value="genre.name"/>
-                    <%@ include file="../component/sortable.jsp" %>
-                </th>
-                <th>
-                    <span class="mt-3">
-                        <a href="${currentUrl}" class="btn-link">
-                            Reset
-                        </a>
-                    </span>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="row">
         <c:forEach items="${pageGames.content}" var="game">
-            <tr>
-                <td>${game.name}</td>
-                <td>${game.publishedAt}</td>
-                <td>${game.publisher.name}</td>
-                <td>${game.genre.name}</td>
-                <td></td>
-            </tr>
+            <%@ include file="../component/entity/game-card.jsp" %>
         </c:forEach>
-        </tbody>
-    </table>
-
-    <c:set var="page" scope="request" value="${pageGames}"/>
+    </div>
     <%@ include file="../component/pagination.jsp" %>
-
 </div>
 
 <%@ include file="../footer.jsp" %>
