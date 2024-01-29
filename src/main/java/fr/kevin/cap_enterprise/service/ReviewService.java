@@ -47,4 +47,8 @@ public class ReviewService implements DAOFindAllInterface<Review> {
         review.setRating(reviewDTO.getRating());
         return reviewRepository.saveAndFlush(review);
     }
+
+    public void moderateReview(Long id, boolean status) {
+
+    }
 }

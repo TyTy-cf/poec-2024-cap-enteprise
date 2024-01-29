@@ -24,5 +24,8 @@
                 ${review.game.name}
             </a>
         </div>
+        <c:if test="${review.moderatedAt == null && userLogged.admin}">
+            <a class="btn btn-link rating-20" href="#">accepter</a> / <a class="btn btn-link rating-5" href="#">refuser</a>
+        </c:if>
     </div>
 </div>
