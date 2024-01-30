@@ -13,8 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -59,10 +61,16 @@ public class ReviewService implements
         return reviewRepository.saveAndFlush(review);
     }
 
-    public boolean moderateReview(String nickname, Long id, Long status) {
+    /**
+     * @param nickname of the logged-in user
+     * @param id of the review to moderate
+     * @param moderate the status : 0 to delete - 1 to accepted
+     * @return boolean true if the review is accepted, false otherwise
+     */
+    public boolean moderateReview(String nickname, Long id, Long moderate) {
         Review review = findById(id);
         boolean isModerate = true;
-        if (status == 1L) {
+        if (moderate == 1L) {
             review.setModerator((Moderator) userService.findByNickname(nickname));
             review.setModeratedAt(LocalDateTime.now());
         } else {
@@ -77,9 +85,28 @@ public class ReviewService implements
         User user = userService.findByNickname(nickname);
         Page<Review> pageReviews = findByUserNickname(nickname, pageable);
         if (user.isModerator()) {
-            Sort sort = pageable.getSort();
-            pageReviews = findAll(pageable);
+            Sort.Order order = pageable.getSort().getOrderFor("moderator");
+            if (order != null) {
+                if (order.isAscending()) {
+                    pageReviews = reviewRepository.findByModeratorIsNull(pageable);
+                } else {
+                    pageReviews = reviewRepository.findByModeratorIsNotNull(pageable);
+                }
+            } else {
+                pageReviews = reviewRepository.findAll(pageable);
+            }
         }
         return pageReviews;
+    }
+
+    public Page<Review> findReviewsForProfile(
+            User user,
+            Principal principal,
+            Pageable pageable
+    ) {
+        if (user.getNickname().equals(principal.getName())) {
+            return reviewRepository.findAllByGamerNickname(user.getNickname(), pageable);
+        }
+        return reviewRepository.findByModeratorIsNotNullAndGamerNickname(user.getNickname(), pageable);
     }
 }

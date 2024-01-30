@@ -1,5 +1,7 @@
 package fr.kevin.cap_enterprise.service;
 
+import fr.kevin.cap_enterprise.DTO.RegisterDTO;
+import fr.kevin.cap_enterprise.entity.Gamer;
 import fr.kevin.cap_enterprise.entity.Moderator;
 import fr.kevin.cap_enterprise.entity.User;
 import fr.kevin.cap_enterprise.repository.UserRepository;
@@ -11,8 +13,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -23,6 +28,8 @@ public class UserService implements
 {
 
     private UserRepository userRepository;
+
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public User findById(Long id) {
@@ -53,4 +60,18 @@ public class UserService implements
         return List.of(new SimpleGrantedAuthority("ROLE_GAMER"));
     }
 
+    public User findByUuid(String uuid) {
+        return userRepository.findByUuid(uuid)
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
+    public Gamer createGamer(RegisterDTO registerDto) {
+        Gamer gamer = new Gamer();
+        gamer.setEmail(registerDto.getEmail());
+        gamer.setNickname(registerDto.getNickname());
+        gamer.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        gamer.setBirthAt(LocalDate.parse(registerDto.getBirthedAt(), formatter));
+        return userRepository.saveAndFlush(gamer);
+    }
 }

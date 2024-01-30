@@ -30,9 +30,25 @@
             <c:set var="sortable" value="gamer.nickname"/>
             <%@ include file="component/sortable.jsp" %>
 
-            <c:set var="label" scope="request" value="À modérer"/>
-            <c:set var="sortable" value="moderator"/>
-            <%@ include file="component/sortable.jsp" %>
+            <security:authorize access="hasRole('MODERATOR')">
+                <div class="sort-filter mt-4 me-3">
+                <select class="form-select sortable-select">
+                    <option value="all" data-filter-url="${currentUrl}">
+                        Tous les commentaires
+                    </option>
+                    <option value="sort=moderator,desc"
+                            data-filter-url="${jspUtils.generateUrlFrom(currentUrl, currentQuery, "sort=moderator,desc")}"
+                    >
+                        Modérés
+                    </option>
+                    <option value="sort=moderator,asc"
+                            data-filter-url="${jspUtils.generateUrlFrom(currentUrl, currentQuery, "sort=moderator,asc")}"
+                    >
+                        À modérer
+                    </option>
+                </select>
+            </div>
+            </security:authorize>
 
             <%@ include file="component/filter-reset.jsp" %>
         </div>
@@ -47,12 +63,14 @@
             </div>
         </c:forEach>
     </div>
-    <div>
-        <a href="${UrlRoute.URL_EXPORT}" class="btn btn-link">
-            <i class="fa-solid fa-file-excel me-1"></i>
-            Télécharger export Excel
-        </a>
-    </div>
+    <security:authorize access="hasRole('MODERATOR')">
+        <div>
+            <a href="${UrlRoute.URL_EXPORT}" class="btn btn-link">
+                <i class="fa-solid fa-file-excel me-1"></i>
+                Télécharger export Excel
+            </a>
+        </div>
+    </security:authorize>
     <%@ include file="component/pagination.jsp" %>
 </div>
 

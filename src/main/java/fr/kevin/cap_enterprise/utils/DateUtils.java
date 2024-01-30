@@ -5,11 +5,16 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 
 @Service
 public class DateUtils {
+
+    public int getAgeFromDate(LocalDate localDate) {
+        return Period.between(localDate, LocalDate.now()).getYears();
+    }
 
     public String getDateFormat(LocalDate localDate, String format) {
         if (localDate == null) return "";

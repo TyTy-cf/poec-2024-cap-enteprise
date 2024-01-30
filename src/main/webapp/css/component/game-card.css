@@ -10,12 +10,16 @@
 
 .game-card {
     width: 100%;
-    height: 210px;
+    height: 230px;
+}
+
+.game-card p {
+    margin-bottom: 0;
 }
 
 .game-card-img {
     width: 100%;
-    height: 88%;
+    height: 80%;
 }
 
 .game-card-img img {

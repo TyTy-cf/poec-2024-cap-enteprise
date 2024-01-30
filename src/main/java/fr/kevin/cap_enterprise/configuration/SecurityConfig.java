@@ -2,6 +2,7 @@ package fr.kevin.cap_enterprise.configuration;
 
 import fr.kevin.cap_enterprise.mapping.UrlRoute;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
@@ -17,16 +18,24 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth ->
                 auth
+                    .requestMatchers("/").authenticated()
                     .requestMatchers(UrlRoute.URL_GAME + "/**").authenticated()
+                    .requestMatchers(UrlRoute.URL_USER + "/**").authenticated()
                     .requestMatchers(UrlRoute.URL_REVIEW + "/**").hasRole("MODERATOR")
+                    .requestMatchers(HttpMethod.POST, UrlRoute.URL_GAME + "/**").hasRole("MODERATOR")
                     .requestMatchers("/**").permitAll()
             )
             .formLogin(formLogin ->
                 formLogin
                     .loginPage(UrlRoute.URL_LOGIN)
+                    .defaultSuccessUrl("/", true)
                     .permitAll()
             )
-            .logout(LogoutConfigurer::permitAll);
+            .logout(logout ->
+                logout
+                    .logoutSuccessUrl("/login")
+                    .permitAll()
+            );
 
         return http.build();
     }

@@ -3,19 +3,24 @@
 <jsp:include flush="true" page="../base.jsp"/>
 
 <div class="container">
-  <f:form method="POST" modelAttribute="userForm" class="form-signin">
-    <h2 class="form-signin-heading">Create your account</h2>
+  <f:form method="POST" modelAttribute="registerDto" class="form-signin">
+    <h1 class="form-signin-heading">Créer son compte</h1>
       <div class="form-group ${status.error ? 'has-error' : ''}">
-        <f:input type="text" path="username" class="form-control" placeholder="Email"
+        <f:input type="text" path="nickname" class="form-control" placeholder="Pseudo"
                     autofocus="true"/>
-        <f:errors path="username" cssClass="invalid-feedback"/>
+        <f:errors path="nickname" cssClass="invalid-feedback"/>
+      </div>
+      <div class="my-3 form-group ${status.error ? 'has-error' : ''}">
+        <f:input type="text" path="email" class="form-control" placeholder="Email"
+                    autofocus="true"/>
+        <f:errors path="email" cssClass="invalid-feedback"/>
       </div>
       <div class="form-group ${status.error ? 'has-error' : ''}">
-        <f:input type="text" path="name" class="form-control" placeholder="Account name"
-                    autofocus="true"/>
-        <f:errors path="name" cssClass="invalid-feedback"/>
+        <f:input type="date" path="birthedAt" class="form-control" placeholder="Date de naissance"
+                 autofocus="true"/>
+        <f:errors path="birthedAt" cssClass="invalid-feedback"/>
       </div>
-      <div class="form-group ${status.error ? 'has-error' : ''}">
+      <div class="my-3 form-group ${status.error ? 'has-error' : ''}">
         <f:input type="password" path="password" class="form-control" placeholder="Password"/>
         <f:errors path="password" cssClass="invalid-feedback"/>
       </div>

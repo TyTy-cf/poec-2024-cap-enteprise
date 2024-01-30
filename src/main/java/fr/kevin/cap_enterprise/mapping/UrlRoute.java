@@ -6,6 +6,7 @@ public class UrlRoute {
     public final static String URL_LOGOUT = "/logout";
     public final static String URL_REGISTER = "/s-inscrire";
     public final static String URL_USER = "/gamer";
+    public final static String URL_USER_SHOW = "/gamer/{uuid}";
     public final static String URL_EXPORT= "/telecharger-export-excel";
 
     public final static String URL_REVIEW = "/avis";

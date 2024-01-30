@@ -41,11 +41,6 @@ public class HomeController {
                 direction = Sort.Direction.DESC
             ) Pageable pageable
     ) {
-        if (principal == null) {
-            mav.setViewName("redirect:/login");
-            return mav;
-        }
-
         mav.addObject("pageReviews", reviewService.getPageReviewByNickname(principal.getName(), pageable));
         mav.addObject("flashMessage", flashMessage);
         mav.setViewName("index");

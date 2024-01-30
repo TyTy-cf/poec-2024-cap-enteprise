@@ -16,7 +16,7 @@
         Se connecter <i class="fa-solid fa-right-to-bracket"></i>
       </button>
       <h4 class="text-center mt-3">
-        <a href="${contextPath}/register" class="btn-link">
+        <a href="${UrlRoute.URL_REGISTER}" class="btn-link">
           S'inscrire <i class="fa-solid fa-user-plus"></i>
         </a>
       </h4>

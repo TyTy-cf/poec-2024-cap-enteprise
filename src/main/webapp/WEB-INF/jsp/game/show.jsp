@@ -20,6 +20,12 @@
         </div>
         <div class="col-md-6 col-sm-12">
             <h1>${game.name}</h1>
+            <p class="m-0">Sortie le : ${dateUtils.getDateFormat(game.publishedAt, "dd/MM/yyyy")}</p>
+            <p class="m-0">Editeur : ${game.publisher.name}</p>
+            <p class="m-0">Genre : ${game.genre.name}</p>
+            <p class="m-0">Modèle économique : ${game.businessModel.name}</p>
+            <p class="m-0">Classification : ${game.classification.name}</p>
+
             <c:if test="${game.platforms.size() > 0}">
                 <p class="m-0">Disponible sur :</p>
                 <ul class="list-unstyled">

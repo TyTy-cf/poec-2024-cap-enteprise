@@ -20,4 +20,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> findByModeratorIsNotNull(Pageable pageable);
 
     Page<Review> findByModeratorIsNull(Pageable pageable);
+
+    Page<Review> findAllByGamerNickname(String nickname, Pageable pageable);
+
+    Page<Review> findByModeratorIsNotNullAndGamerNickname(String nickname, Pageable pageable);
 }
