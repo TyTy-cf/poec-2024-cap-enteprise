@@ -5,6 +5,7 @@ import fr.kevin.cap_enterprise.entity.Game;
 import fr.kevin.cap_enterprise.mapping.UrlRoute;
 import fr.kevin.cap_enterprise.service.GameService;
 import fr.kevin.cap_enterprise.service.ReviewService;
+import fr.kevin.cap_enterprise.utils.FlashMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -47,7 +48,7 @@ public class GameController {
         @PathVariable String slug,
         ModelAndView mav,
         Principal principal,
-        @ModelAttribute("reviewFormMessage") String reviewFormMessage,
+        @ModelAttribute("flashMessage") FlashMessage flashMessage,
         @PageableDefault(
             size = 6, // nb Element par page
             sort = { "createdAt" }, // order by
@@ -59,7 +60,7 @@ public class GameController {
             mav.addObject("reviewDto", new ReviewDTO());
         }
         Game game = gameService.findBySlug(slug);
-        mav.addObject("formMessage", reviewFormMessage);
+        mav.addObject("flashMessage", flashMessage);
         mav.addObject("game", game);
         mav.addObject("pageReviews", reviewService.findAllByGame(game, pageable));
         return mav;
@@ -83,7 +84,10 @@ public class GameController {
             gameService.findBySlug(slug),
             principal.getName()
         );
-        redirectAttributes.addFlashAttribute("reviewFormMessage", "Votre commentaire a bien été enregistré, il est actuellement en attente de modération !");
+        redirectAttributes.addFlashAttribute(
+            "flashMessage",
+            new FlashMessage("success", "Votre commentaire a bien été enregistré, il est actuellement en attente de modération !")
+        );
         mav.setViewName("redirect:" + UrlRoute.URL_GAME + "/" + slug);
         return mav;
     }

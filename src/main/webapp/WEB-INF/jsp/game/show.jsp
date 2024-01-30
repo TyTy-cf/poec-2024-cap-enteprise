@@ -12,11 +12,6 @@
             <li class="breadcrumb-item active"><a class="btn-link" href="#game-reviews">Les commentaires</a></li>
         </ol>
     </nav>
-    <c:if test="${!reviewFormMessage.equals('')}">
-        <div class="alert alert-success">
-            ${reviewFormMessage}
-        </div>
-    </c:if>
     <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="container-img p-3">
@@ -76,7 +71,7 @@
                 <div class="my-3 row">
                     <f:label path="rating" class="col-sm-2 col-form-label">Note</f:label>
                     <div class="col-sm-10">
-                        <f:input type="number" cssClass="form-control" path="rating"/>
+                        <f:input type="number" step="0.5" cssClass="form-control" path="rating"/>
                         <f:errors path="rating" cssClass="invalid-feedback"/>
                     </div>
                 </div>

@@ -77,3 +77,10 @@
             </div>
         </div>
     </nav>
+    <div class="container">
+        <c:if test="${requestScope.get('flashMessage') != null}">
+            <div class="alert alert-${flashMessage.type}">
+                    ${flashMessage.message}
+            </div>
+        </c:if>
+    </div>

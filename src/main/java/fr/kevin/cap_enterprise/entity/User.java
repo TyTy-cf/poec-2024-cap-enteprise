@@ -65,7 +65,7 @@ public abstract class User implements UserDetails {
         return true;
     }
 
-    public boolean isAdmin() {
+    public boolean isModerator() {
         return this instanceof Moderator;
     }
 

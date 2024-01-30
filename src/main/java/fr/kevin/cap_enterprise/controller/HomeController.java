@@ -6,6 +6,7 @@ import fr.kevin.cap_enterprise.mapping.UrlRoute;
 import fr.kevin.cap_enterprise.service.ReviewService;
 import fr.kevin.cap_enterprise.service.UserService;
 import fr.kevin.cap_enterprise.utils.ExcelReviewService;
+import fr.kevin.cap_enterprise.utils.FlashMessage;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -39,7 +40,7 @@ public class HomeController {
     public ModelAndView index(
             ModelAndView mav,
             Principal principal,
-            @ModelAttribute("messageModerate") String messageModerate,
+            @ModelAttribute("flashMessage") FlashMessage flashMessage,
             @PageableDefault(
                 size = 6, // nb Element par page
                 sort = { "createdAt" }, // order by
@@ -53,11 +54,11 @@ public class HomeController {
 
         User user = userService.findByNickname(principal.getName());
         Page<Review> pageReviews = reviewService.findByUserNickname(principal.getName(), pageable);
-        if (user.isAdmin()) {
+        if (user.isModerator()) {
             pageReviews = reviewService.findAll(pageable);
         }
         mav.addObject("pageReviews", pageReviews);
-        mav.addObject("messageModerate", messageModerate);
+        mav.addObject("flashMessage", flashMessage);
         mav.setViewName("index");
         return mav;
     }

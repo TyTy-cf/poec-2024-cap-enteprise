@@ -57,14 +57,17 @@ public class ReviewService implements
         return reviewRepository.saveAndFlush(review);
     }
 
-    public void moderateReview(User user, Long id, Long status) {
+    public boolean moderateReview(User user, Long id, Long status) {
         Review review = findById(id);
+        boolean isModerate = true;
         if (status == 1L) {
             review.setModerator((Moderator) user);
             review.setModeratedAt(LocalDateTime.now());
         } else {
             reviewRepository.delete(review);
+            isModerate = false;
         }
         reviewRepository.flush();
+        return isModerate;
     }
 }
