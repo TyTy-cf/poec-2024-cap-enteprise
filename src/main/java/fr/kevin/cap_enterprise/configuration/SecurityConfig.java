@@ -18,7 +18,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth ->
                 auth
                     .requestMatchers(UrlRoute.URL_GAME + "/**").authenticated()
-                    .requestMatchers(UrlRoute.URL_REVIEW + "/**").authenticated()
+                    .requestMatchers(UrlRoute.URL_REVIEW + "/**").hasRole("MODERATOR")
                     .requestMatchers("/**").permitAll()
             )
             .formLogin(formLogin ->

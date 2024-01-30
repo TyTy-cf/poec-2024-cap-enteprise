@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,7 +31,7 @@ public class ReviewService implements
     }
 
     public Page<Review> findByUserNickname(String nickname, Pageable pageable) {
-        return reviewRepository.findByUserNickname(nickname, pageable);
+        return reviewRepository.findByModeratorIsNotNullOrGamerNickname(nickname, pageable);
     }
 
     @Override
@@ -54,14 +55,15 @@ public class ReviewService implements
         review.setGamer((Gamer) userService.findByNickname(name));
         review.setDescription(reviewDTO.getDescription());
         review.setRating(reviewDTO.getRating());
+        review.setCreatedAt(LocalDateTime.now());
         return reviewRepository.saveAndFlush(review);
     }
 
-    public boolean moderateReview(User user, Long id, Long status) {
+    public boolean moderateReview(String nickname, Long id, Long status) {
         Review review = findById(id);
         boolean isModerate = true;
         if (status == 1L) {
-            review.setModerator((Moderator) user);
+            review.setModerator((Moderator) userService.findByNickname(nickname));
             review.setModeratedAt(LocalDateTime.now());
         } else {
             reviewRepository.delete(review);
@@ -69,5 +71,21 @@ public class ReviewService implements
         }
         reviewRepository.flush();
         return isModerate;
+    }
+
+    public Page<Review> getPageReviewByNickname(String nickname, Pageable pageable) {
+        User user = userService.findByNickname(nickname);
+        Page<Review> pageReviews = findByUserNickname(nickname, pageable);
+        if (user.isModerator()) {
+            // Sort review by to-moderated first with createdAt
+            pageable = PageRequest.of(
+                pageable.getPageNumber(),
+                6,
+                Sort.by("moderator").ascending()
+                        .and(Sort.by("createdAt").descending())
+            );
+            pageReviews = findAll(pageable);
+        }
+        return pageReviews;
     }
 }

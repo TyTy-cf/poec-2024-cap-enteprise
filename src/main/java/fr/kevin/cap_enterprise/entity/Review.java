@@ -27,7 +27,6 @@ public class Review {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @CreationTimestamp
     private LocalDateTime createdAt;
 
     private LocalDateTime moderatedAt;

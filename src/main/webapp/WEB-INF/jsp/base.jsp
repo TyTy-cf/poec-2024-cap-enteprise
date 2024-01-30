@@ -62,6 +62,9 @@
                             Bienvenue
                             <a class="logged-user btn-link" href="${UrlRoute.URL_USER}/${userLogged.uuid}">
                                 ${userLogged.nickname}
+                                <security:authorize access="hasRole('MODERATOR')">
+                                    <i class="fa-solid fa-user-graduate"></i>
+                                </security:authorize>
                             </a>
                         </span>
                     </div>
@@ -77,10 +80,10 @@
             </div>
         </div>
     </nav>
-    <div class="container">
-        <c:if test="${requestScope.get('flashMessage') != null}">
+    <c:if test="${not empty flashMessage.message}">
+        <div class="container">
             <div class="alert alert-${flashMessage.type}">
-                    ${flashMessage.message}
+                ${flashMessage.message}
             </div>
-        </c:if>
-    </div>
+        </div>
+    </c:if>

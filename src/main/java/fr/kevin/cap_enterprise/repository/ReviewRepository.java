@@ -15,6 +15,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Page<Review> findAllByGameAndModeratorIsNotNull(Game game, Pageable pageable);
 
-    @Query("select r from Review r where r.moderatedAt is not null OR (r.gamer.nickname = ?1 and r.moderatedAt is null)")
-    Page<Review> findByUserNickname(String nickname, Pageable pageable);
+    Page<Review> findByModeratorIsNotNullOrGamerNickname(String nickname, Pageable pageable);
 }

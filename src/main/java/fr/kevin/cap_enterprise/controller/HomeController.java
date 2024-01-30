@@ -1,16 +1,12 @@
 package fr.kevin.cap_enterprise.controller;
 
-import fr.kevin.cap_enterprise.entity.Review;
-import fr.kevin.cap_enterprise.entity.User;
 import fr.kevin.cap_enterprise.mapping.UrlRoute;
 import fr.kevin.cap_enterprise.service.ReviewService;
-import fr.kevin.cap_enterprise.service.UserService;
 import fr.kevin.cap_enterprise.utils.ExcelReviewService;
 import fr.kevin.cap_enterprise.utils.FlashMessage;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -32,8 +28,6 @@ public class HomeController {
 
     private ReviewService reviewService;
 
-    private UserService userService;
-
     private ExcelReviewService excelService;
 
     @GetMapping("/")
@@ -52,12 +46,7 @@ public class HomeController {
             return mav;
         }
 
-        User user = userService.findByNickname(principal.getName());
-        Page<Review> pageReviews = reviewService.findByUserNickname(principal.getName(), pageable);
-        if (user.isModerator()) {
-            pageReviews = reviewService.findAll(pageable);
-        }
-        mav.addObject("pageReviews", pageReviews);
+        mav.addObject("pageReviews", reviewService.getPageReviewByNickname(principal.getName(), pageable));
         mav.addObject("flashMessage", flashMessage);
         mav.setViewName("index");
         return mav;
