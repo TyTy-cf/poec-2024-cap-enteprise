@@ -25,7 +25,13 @@
             </a>
         </div>
         <c:if test="${review.moderatedAt == null && userLogged.admin}">
-            <a class="btn btn-link rating-20" href="#">accepter</a> / <a class="btn btn-link rating-5" href="#">refuser</a>
+            <a class="btn btn-link rating-20" href="${UrlRoute.URL_REVIEW}/${review.id}/1">
+                accepter
+            </a>
+             /
+            <a class="btn btn-link rating-5" href="${UrlRoute.URL_REVIEW}/${review.id}/0">
+                refuser
+            </a>
         </c:if>
     </div>
 </div>

@@ -39,7 +39,7 @@
         <c:set var="page" scope="request" value="${pageGames}"/>
         <%@ include file="../component/pagination-number.jsp" %>
     </div>
-    <div class="row">
+    <div class="row mt-3">
         <c:forEach items="${pageGames.content}" var="game">
             <%@ include file="../component/entity/game-card.jsp" %>
         </c:forEach>

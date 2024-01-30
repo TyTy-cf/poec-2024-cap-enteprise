@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.ByteArrayInputStream;
@@ -38,6 +39,7 @@ public class HomeController {
     public ModelAndView index(
             ModelAndView mav,
             Principal principal,
+            @ModelAttribute("messageModerate") String messageModerate,
             @PageableDefault(
                 size = 6, // nb Element par page
                 sort = { "createdAt" }, // order by
@@ -55,6 +57,7 @@ public class HomeController {
             pageReviews = reviewService.findAll(pageable);
         }
         mav.addObject("pageReviews", pageReviews);
+        mav.addObject("messageModerate", messageModerate);
         mav.setViewName("index");
         return mav;
     }

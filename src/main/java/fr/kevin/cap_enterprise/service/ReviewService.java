@@ -1,22 +1,25 @@
 package fr.kevin.cap_enterprise.service;
 
 import fr.kevin.cap_enterprise.DTO.ReviewDTO;
-import fr.kevin.cap_enterprise.entity.Game;
-import fr.kevin.cap_enterprise.entity.Gamer;
-import fr.kevin.cap_enterprise.entity.Review;
+import fr.kevin.cap_enterprise.entity.*;
 import fr.kevin.cap_enterprise.repository.ReviewRepository;
+import fr.kevin.cap_enterprise.service.interfaces.DAOEntityInterface;
 import fr.kevin.cap_enterprise.service.interfaces.DAOFindAllInterface;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class ReviewService implements DAOFindAllInterface<Review> {
+public class ReviewService implements
+        DAOEntityInterface<Review>
+{
 
     private ReviewRepository reviewRepository;
 
@@ -35,6 +38,12 @@ public class ReviewService implements DAOFindAllInterface<Review> {
         return reviewRepository.findAll();
     }
 
+    @Override
+    public Review findById(Long id) {
+        return reviewRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
     public Page<Review> findAllByGame(Game game, Pageable pageable) {
         return reviewRepository.findAllByGameAndModeratorIsNotNull(game, pageable);
     }
@@ -48,7 +57,14 @@ public class ReviewService implements DAOFindAllInterface<Review> {
         return reviewRepository.saveAndFlush(review);
     }
 
-    public void moderateReview(Long id, boolean status) {
-
+    public void moderateReview(User user, Long id, Long status) {
+        Review review = findById(id);
+        if (status == 1L) {
+            review.setModerator((Moderator) user);
+            review.setModeratedAt(LocalDateTime.now());
+        } else {
+            reviewRepository.delete(review);
+        }
+        reviewRepository.flush();
     }
 }

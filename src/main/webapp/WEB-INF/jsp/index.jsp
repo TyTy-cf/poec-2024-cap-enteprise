@@ -10,6 +10,11 @@
             <li class="breadcrumb-item"><a class="btn-link" href="${contextPath}${UrlRoute.URL_GAME}">Les jeux</a></li>
         </ol>
     </nav>
+    <c:if test="${!messageModerate.equals('')}">
+        <div class="alert alert-success">
+                ${messageModerate}
+        </div>
+    </c:if>
     <div class="d-flex justify-content-between">
         <div class="d-flex">
             <!-- Label à afficher -->
