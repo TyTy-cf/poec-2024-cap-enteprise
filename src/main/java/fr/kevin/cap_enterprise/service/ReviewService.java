@@ -77,6 +77,7 @@ public class ReviewService implements
         User user = userService.findByNickname(nickname);
         Page<Review> pageReviews = findByUserNickname(nickname, pageable);
         if (user.isModerator()) {
+            Sort sort = pageable.getSort();
             pageReviews = findAll(pageable);
         }
         return pageReviews;
