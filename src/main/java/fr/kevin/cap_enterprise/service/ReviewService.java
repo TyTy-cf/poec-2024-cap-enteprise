@@ -77,13 +77,6 @@ public class ReviewService implements
         User user = userService.findByNickname(nickname);
         Page<Review> pageReviews = findByUserNickname(nickname, pageable);
         if (user.isModerator()) {
-            // Sort review by to-moderated first with createdAt
-            pageable = PageRequest.of(
-                pageable.getPageNumber(),
-                6,
-                Sort.by("moderator").ascending()
-                        .and(Sort.by("createdAt").descending())
-            );
             pageReviews = findAll(pageable);
         }
         return pageReviews;

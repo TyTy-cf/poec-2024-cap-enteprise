@@ -30,6 +30,10 @@
             <c:set var="sortable" value="gamer.nickname"/>
             <%@ include file="component/sortable.jsp" %>
 
+            <c:set var="label" scope="request" value="À modérer"/>
+            <c:set var="sortable" value="moderator"/>
+            <%@ include file="component/sortable.jsp" %>
+
             <%@ include file="component/filter-reset.jsp" %>
         </div>
 
