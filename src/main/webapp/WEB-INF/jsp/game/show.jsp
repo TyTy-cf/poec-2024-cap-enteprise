@@ -117,8 +117,8 @@
                 </c:forEach>
             </div>
             <%@ include file="../component/pagination.jsp" %>
-        </div>
-    </c:if>
+        </c:if>
+    </div>
 </div>
 
 <%@ include file="../footer.jsp" %>
