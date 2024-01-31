@@ -27,4 +27,9 @@ public class ClassificationService implements
         return classificationRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
     }
+
+    @Override
+    public List<Classification> findAllSorted() {
+        return classificationRepository.findAllByOrderByNameAsc();
+    }
 }

@@ -16,6 +16,7 @@
         <script type="text/javascript" src="${contextPath}/js/init-sortable.js"></script>
         <script type="text/javascript" src="${contextPath}/js/hide-form.js"></script>
         <script type="text/javascript" src="${contextPath}/js/alert.js"></script>
+        <script type="text/javascript" src="${contextPath}/js/multiple-select.js"></script>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">

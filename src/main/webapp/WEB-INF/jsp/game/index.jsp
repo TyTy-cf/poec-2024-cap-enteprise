@@ -11,7 +11,14 @@
         </ol>
     </nav>
 
-    <h1>Les jeux</h1>
+    <h1>
+        Les jeux
+        <security:authorize access="hasRole('MODERATOR')">
+            <a href="${UrlRoute.URL_GAME_NEW}" class="ms-2">
+                <i class="fa fa-circle-plus link-green"></i>
+            </a>
+        </security:authorize>
+    </h1>
 
     <div class="d-flex justify-content-between">
         <div class="d-flex">

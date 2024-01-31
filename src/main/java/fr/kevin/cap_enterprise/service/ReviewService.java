@@ -5,6 +5,7 @@ import fr.kevin.cap_enterprise.entity.*;
 import fr.kevin.cap_enterprise.repository.ReviewRepository;
 import fr.kevin.cap_enterprise.service.interfaces.DAOEntityInterface;
 import fr.kevin.cap_enterprise.service.interfaces.DAOFindAllInterface;
+import fr.kevin.cap_enterprise.service.interfaces.DAOFindByIdInterface;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
 @Service
 @AllArgsConstructor
 public class ReviewService implements
-        DAOEntityInterface<Review>
+        DAOFindByIdInterface<Review>
 {
 
     private ReviewRepository reviewRepository;
@@ -32,13 +33,12 @@ public class ReviewService implements
         return reviewRepository.findAll(pageable);
     }
 
-    public Page<Review> findByUserNickname(String nickname, Pageable pageable) {
-        return reviewRepository.findByModeratorIsNotNullOrGamerNickname(nickname, pageable);
-    }
-
-    @Override
     public List<Review> findAll() {
         return reviewRepository.findAll();
+    }
+
+    public Page<Review> findByUserNickname(String nickname, Pageable pageable) {
+        return reviewRepository.findByModeratorIsNotNullOrGamerNickname(nickname, pageable);
     }
 
     @Override

@@ -23,6 +23,11 @@ public class BusinessModelService implements
     }
 
     @Override
+    public List<BusinessModel> findAllSorted() {
+        return businessModelRepository.findAllByOrderByNameAsc();
+    }
+
+    @Override
     public BusinessModel findById(Long id) {
         return businessModelRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);

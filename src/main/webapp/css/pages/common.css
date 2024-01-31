@@ -27,6 +27,10 @@ h2 {
     font-size: 1.2em;
 }
 
+textarea {
+    min-height: 200px !important;
+}
+
 .invalid-feedback {
     display: block;
 }

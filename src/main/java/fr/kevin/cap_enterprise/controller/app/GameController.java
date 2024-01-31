@@ -1,11 +1,15 @@
 package fr.kevin.cap_enterprise.controller.app;
 
+import fr.kevin.cap_enterprise.DTO.GameDTO;
 import fr.kevin.cap_enterprise.DTO.ReviewDTO;
+import fr.kevin.cap_enterprise.entity.BusinessModel;
 import fr.kevin.cap_enterprise.entity.Game;
 import fr.kevin.cap_enterprise.mapping.UrlRoute;
-import fr.kevin.cap_enterprise.service.GameService;
-import fr.kevin.cap_enterprise.service.ReviewService;
+import fr.kevin.cap_enterprise.repository.GenreRepository;
+import fr.kevin.cap_enterprise.service.*;
 import fr.kevin.cap_enterprise.utils.FlashMessage;
+import fr.kevin.cap_enterprise.utils.FlashMessageBuilder;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,6 +32,16 @@ public class GameController {
     private GameService gameService;
 
     private ReviewService reviewService;
+
+    private GenreService genreService;
+
+    private ClassificationService classificationService;
+
+    private BusinessModelService businessModelService;
+
+    private PublisherService publisherService;
+
+    private PlatformService platformService;
 
     @GetMapping(UrlRoute.URL_GAME)
     public ModelAndView index(
@@ -84,11 +98,45 @@ public class GameController {
             gameService.findBySlug(slug),
             principal.getName()
         );
-        redirectAttributes.addFlashAttribute(
-            "flashMessage",
-            new FlashMessage("success", "Votre commentaire a bien été enregistré, il est actuellement en attente de modération !")
-        );
+        FlashMessageBuilder
+            .createSuccessFlashMessage(
+                redirectAttributes,
+                "Votre commentaire a bien été enregistré, il est actuellement en attente de modération !"
+            );
         mav.setViewName("redirect:" + UrlRoute.URL_GAME + "/" + slug);
+        return mav;
+    }
+
+    @GetMapping(UrlRoute.URL_GAME_NEW)
+    public ModelAndView create(ModelAndView mav) {
+        mav.setViewName("game/new");
+        mav.addObject("gameDto", new GameDTO());
+        mav.addObject("genres", genreService.findAllSorted());
+        mav.addObject("classifications", classificationService.findAllSorted());
+        mav.addObject("businessModels", businessModelService.findAllSorted());
+        mav.addObject("publishers", publisherService.findAllSorted());
+        mav.addObject("platforms", platformService.findAllSorted());
+        return mav;
+    }
+
+    @PostMapping(UrlRoute.URL_GAME_NEW)
+    public ModelAndView create(
+        ModelAndView mav,
+        @ModelAttribute("gameDto") GameDTO gameDTO,
+        BindingResult bindingResult,
+        RedirectAttributes redirectAttributes,
+        Principal principal
+    ) {
+        if (bindingResult.hasErrors()) {
+            mav.setViewName("game/new");
+            return mav;
+        }
+        FlashMessageBuilder
+            .createSuccessFlashMessage(
+                redirectAttributes,
+                "Jeu créé avec succès !"
+            );
+        mav.setViewName("redirect:" + UrlRoute.URL_GAME + "/" + gameService.create(gameDTO, principal.getName()).getSlug());
         return mav;
     }
 }
