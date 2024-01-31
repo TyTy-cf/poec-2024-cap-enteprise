@@ -59,12 +59,14 @@
     >
         <h1>
             Commentaires
-            <button class="ms-2 btn btn-link"
-                    title="Ajouter un commentaire"
-                    data-hide-show-button="formReview"
-            >
-                <i class="fa fa-pen fa-2x"></i>
-            </button>
+            <security:authorize access="!hasRole('MODERATOR')">
+                <button class="ms-2 btn btn-link"
+                        title="Ajouter un commentaire"
+                        data-hide-show-button="formReview"
+                >
+                    <i class="fa fa-pen fa-2x"></i>
+                </button>
+            </security:authorize>
         </h1>
         <div class="my-3 d-none"
              data-hide-show-container="formReview"

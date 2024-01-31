@@ -159,7 +159,6 @@ public class GameController {
         @PathVariable String slug,
         RedirectAttributes redirectAttributes
     ) {
-
         String fileName = fileUploadService.uploadFile(file, "game", slug);
         if (fileName.contains("erreur")) {
             redirectAttributes.addFlashAttribute(
@@ -172,7 +171,7 @@ public class GameController {
         gameService.saveImageToGame(fileName, slug);
         redirectAttributes.addFlashAttribute(
             "flashMessage",
-            flashMessageBuilder.createSuccessFlashMessage("Image téléversée avec succès")
+            flashMessageBuilder.createSuccessFlashMessage("Image téléversée avec succès !")
         );
         mav.setViewName("redirect:" + UrlRoute.URL_GAME + "/" + slug);
         return mav;

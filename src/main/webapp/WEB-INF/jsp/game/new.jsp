@@ -14,7 +14,7 @@
 
     <h1 class="my-4 text-center">Ajouter un jeu</h1>
 
-    <f:form method="POST" modelAttribute="gameDto" class="col-lg-8 col-md-10 col-sm-12 mx-auto">
+    <f:form method="POST" modelAttribute="gameDto" class="col-lg-8 col-md-12 col-sm-12 mx-auto">
         <div class="row mb-3">
             <div class="col-md-8 col-sm-12">
                 <f:label class="col-form-label" path="name">Nom</f:label>
