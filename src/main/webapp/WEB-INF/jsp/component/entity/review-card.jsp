@@ -31,7 +31,7 @@
     </p>
     <div class="review-card w-100">
         <p class="review-description">
-            ${jspUtils.excerpt(review.description, 209)}
+            <c:out value="${jspUtils.excerpt(review.description, 120)}" escapeXml="false"/>
         </p>
         <div class="d-flex justify-content-between">
             <p class="${jspUtils.getCssClas(review.rating)}">

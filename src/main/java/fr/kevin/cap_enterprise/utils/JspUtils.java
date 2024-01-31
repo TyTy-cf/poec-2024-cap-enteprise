@@ -10,7 +10,11 @@ public class JspUtils {
 
     public String excerpt(String text, int size) {
         if (text.length() <= size) return text;
-        return text.substring(0, size) + "...";
+        String finalText = text.substring(0, size) + "...";
+        if (!finalText.contains("</strong>")) {
+            finalText += "</strong>";
+        }
+        return finalText;
     }
 
     public String getCssClas(float rating) {
