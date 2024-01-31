@@ -55,4 +55,10 @@ public class GameService implements
         game.setImage("https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg");
         return gameRepository.saveAndFlush(game);
     }
+
+    public void saveImageToGame(String fileName, String slug) {
+        Game game = findBySlug(slug);
+        game.setImage(fileName);
+        gameRepository.flush();
+    }
 }

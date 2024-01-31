@@ -14,7 +14,7 @@
     <h1>
         Les jeux
         <security:authorize access="hasRole('MODERATOR')">
-            <a href="${UrlRoute.URL_GAME_NEW}" class="ms-2">
+            <a href="${UrlRoute.URL_GAME_NEW}" class="ms-2" title="Ajouter un jeu">
                 <i class="fa fa-circle-plus link-green"></i>
             </a>
         </security:authorize>

@@ -7,8 +7,10 @@ import fr.kevin.cap_enterprise.entity.Game;
 import fr.kevin.cap_enterprise.mapping.UrlRoute;
 import fr.kevin.cap_enterprise.repository.GenreRepository;
 import fr.kevin.cap_enterprise.service.*;
+import fr.kevin.cap_enterprise.utils.FileUploadService;
 import fr.kevin.cap_enterprise.utils.FlashMessage;
 import fr.kevin.cap_enterprise.utils.FlashMessageBuilder;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -16,10 +18,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -44,6 +44,8 @@ public class GameController {
     private PlatformService platformService;
 
     private FlashMessageBuilder flashMessageBuilder;
+
+    private FileUploadService fileUploadService;
 
     @GetMapping(UrlRoute.URL_GAME)
     public ModelAndView index(
@@ -122,11 +124,11 @@ public class GameController {
 
     @PostMapping(UrlRoute.URL_GAME_NEW)
     public ModelAndView create(
-        ModelAndView mav,
-        @ModelAttribute("gameDto") GameDTO gameDTO,
-        BindingResult bindingResult,
-        RedirectAttributes redirectAttributes,
-        Principal principal
+            ModelAndView mav,
+            @ModelAttribute("gameDto") GameDTO gameDTO,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Principal principal
     ) {
         if (bindingResult.hasErrors()) {
             mav.setViewName("game/new");
@@ -134,10 +136,45 @@ public class GameController {
         }
 
         redirectAttributes.addFlashAttribute(
-            "flashMessage",
-            flashMessageBuilder.createSuccessFlashMessage("Jeu créé avec succès !")
+                "flashMessage",
+                flashMessageBuilder.createSuccessFlashMessage("Jeu créé avec succès !")
         );
         mav.setViewName("redirect:" + UrlRoute.URL_GAME + "/" + gameService.create(gameDTO, principal.getName()).getSlug());
+        return mav;
+    }
+
+    @GetMapping(value = UrlRoute.URL_GAME_UPLOAD_IMAGE_PATH)
+    public ModelAndView uploadImage(
+            ModelAndView mav,
+            @PathVariable String slug
+    ) {
+        mav.setViewName("game/upload-image");
+        return mav;
+    }
+
+    @PostMapping(value = UrlRoute.URL_GAME_UPLOAD_IMAGE_PATH)
+    public ModelAndView uploadImage(
+        ModelAndView mav,
+        @RequestParam("file") MultipartFile file,
+        @PathVariable String slug,
+        RedirectAttributes redirectAttributes
+    ) {
+
+        String fileName = fileUploadService.uploadFile(file, "game", slug);
+        if (fileName.contains("erreur")) {
+            redirectAttributes.addFlashAttribute(
+                "flashMessage",
+                flashMessageBuilder.createDangerFlashMessage(fileName)
+            );
+            mav.setViewName("game/upload-image");
+            return mav;
+        }
+        gameService.saveImageToGame(fileName, slug);
+        redirectAttributes.addFlashAttribute(
+            "flashMessage",
+            flashMessageBuilder.createSuccessFlashMessage("Image téléversée avec succès")
+        );
+        mav.setViewName("redirect:" + UrlRoute.URL_GAME + "/" + slug);
         return mav;
     }
 }

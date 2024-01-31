@@ -13,14 +13,14 @@
                 <cite title="Source Title">En attente de moderation ⌛</cite>
                 <c:if test="${userLogged.moderator}">
                     <a class="btn btn-link rating-20"
-                       href="${UrlRoute.URL_REVIEW}/${review.id}/1"
+                       href="${UrlRoute.URL_REVIEW_MODERATE}/${review.id}/1"
                        title="Accepter"
                     >
                         <i class="fa fa-check fa-2x"></i>
                     </a>
                     /
                     <a class="btn btn-link rating-5"
-                       href="${UrlRoute.URL_REVIEW}/${review.id}/0"
+                       href="${UrlRoute.URL_REVIEW_MODERATE}/${review.id}/0"
                        title="Refuser"
                     >
                         <i class="fa-solid fa-xmark fa-2x"></i>

@@ -19,7 +19,14 @@
             </div>
         </div>
         <div class="col-md-6 col-sm-12">
-            <h1>${game.name}</h1>
+            <h1>
+                ${game.name}
+                <security:authorize access="hasRole('MODERATOR')">
+                    <a class="ms-1 link-green" href="${UrlRoute.URL_GAME_UPLOAD_IMAGE}/${game.slug}">
+                        <i class="fa-solid fa-upload"></i>
+                    </a>
+                </security:authorize>
+            </h1>
             <p class="m-0">Sortie le : ${dateUtils.getDateFormat(game.publishedAt, "dd/MM/yyyy")}</p>
             <p class="m-0">Editeur : <a class="link-if" href="#">${game.publisher.name}</a></p>
             <p class="m-0">Genre : <a class="link-if" href="#">${game.genre.name}</a></p>

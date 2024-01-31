@@ -21,7 +21,7 @@ public class ReviewController {
 
     private FlashMessageBuilder flashMessageBuilder;
 
-    @GetMapping(UrlRoute.URL_REVIEW_MODERATE)
+    @GetMapping(UrlRoute.URL_REVIEW_MODERATE_PATH)
     public ModelAndView moderate(
             @PathVariable Long id,
             @PathVariable Long moderate,
