@@ -3,6 +3,7 @@ package fr.kevin.cap_enterprise.controller.app;
 import fr.kevin.cap_enterprise.mapping.UrlRoute;
 import fr.kevin.cap_enterprise.service.ReviewService;
 import fr.kevin.cap_enterprise.utils.FlashMessage;
+import fr.kevin.cap_enterprise.utils.FlashMessageBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,8 @@ public class ReviewController {
 
     private ReviewService reviewService;
 
+    private FlashMessageBuilder flashMessageBuilder;
+
     @GetMapping(UrlRoute.URL_REVIEW_MODERATE)
     public ModelAndView moderate(
             @PathVariable Long id,
@@ -27,9 +30,9 @@ public class ReviewController {
             Principal principal
     ) {
         boolean isModerate = reviewService.moderateReview(principal.getName(), id, moderate);
-        FlashMessage flashMessage = new FlashMessage("success", "Le commentaire a bien été modéré !");
+        FlashMessage flashMessage = flashMessageBuilder.createSuccessFlashMessage("Le commentaire a bien été modéré !");
         if (!isModerate) {
-            flashMessage = new FlashMessage("warning", "Le commentaire a bien été supprimé !");
+            flashMessage = flashMessageBuilder.createWarningFlashMessage("Le commentaire a bien été supprimé !");
         }
         redirectAttributes.addFlashAttribute("flashMessage", flashMessage);
         modelAndView.setViewName("redirect:/");

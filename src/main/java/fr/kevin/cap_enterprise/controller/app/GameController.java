@@ -43,6 +43,8 @@ public class GameController {
 
     private PlatformService platformService;
 
+    private FlashMessageBuilder flashMessageBuilder;
+
     @GetMapping(UrlRoute.URL_GAME)
     public ModelAndView index(
             ModelAndView mav,
@@ -98,11 +100,10 @@ public class GameController {
             gameService.findBySlug(slug),
             principal.getName()
         );
-        FlashMessageBuilder
-            .createSuccessFlashMessage(
-                redirectAttributes,
-                "Votre commentaire a bien été enregistré, il est actuellement en attente de modération !"
-            );
+        redirectAttributes.addFlashAttribute(
+            "flashMessage",
+            flashMessageBuilder.createSuccessFlashMessage("Votre commentaire a bien été enregistré, il est actuellement en attente de modération !")
+        );
         mav.setViewName("redirect:" + UrlRoute.URL_GAME + "/" + slug);
         return mav;
     }
@@ -131,11 +132,11 @@ public class GameController {
             mav.setViewName("game/new");
             return mav;
         }
-        FlashMessageBuilder
-            .createSuccessFlashMessage(
-                redirectAttributes,
-                "Jeu créé avec succès !"
-            );
+
+        redirectAttributes.addFlashAttribute(
+            "flashMessage",
+            flashMessageBuilder.createSuccessFlashMessage("Jeu créé avec succès !")
+        );
         mav.setViewName("redirect:" + UrlRoute.URL_GAME + "/" + gameService.create(gameDTO, principal.getName()).getSlug());
         return mav;
     }
