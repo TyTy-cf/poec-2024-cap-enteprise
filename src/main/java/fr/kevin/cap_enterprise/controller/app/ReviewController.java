@@ -35,7 +35,7 @@ public class ReviewController {
             flashMessage = flashMessageBuilder.createWarningFlashMessage("Le commentaire a bien été supprimé !");
         }
         redirectAttributes.addFlashAttribute("flashMessage", flashMessage);
-        modelAndView.setViewName("redirect:/");
+        modelAndView.setViewName("redirect:/?sort=moderator,asc");
         return modelAndView;
     }
 
