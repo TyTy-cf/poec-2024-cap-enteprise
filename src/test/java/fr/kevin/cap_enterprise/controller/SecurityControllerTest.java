@@ -9,8 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -53,7 +52,7 @@ public class SecurityControllerTest {
     }
 
     @Test
-    public void testFormRegister() throws Exception {
+    public void testFormRegisterOK() throws Exception {
         mockMvc.perform(post("/inscription").with(anonymous())
             .param("nickname", "toto")
             .param("email", "toto@gmail.com")
@@ -61,6 +60,18 @@ public class SecurityControllerTest {
             .param("password", "12345")
             .with(csrf()))
             .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    public void testFormRegisterKO() throws Exception {
+        mockMvc.perform(post("/inscription").with(anonymous())
+                .param("nickname", "")
+                .param("email", "")
+                .param("birthedAt", "")
+                .param("password", "")
+                .with(csrf()))
+            .andExpect(status().is2xxSuccessful())
+            .andExpect(model().hasErrors());
     }
 
 }
