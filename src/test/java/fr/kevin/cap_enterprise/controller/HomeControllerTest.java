@@ -42,7 +42,6 @@ public class HomeControllerTest {
     public void testPageNumberInfos() throws Exception {
         mockMvc.perform(get("/?sort=moderator,asc")
                 .with(user("ipfreely").roles("MODERATOR"))
-                .contentType(MediaType.TEXT_HTML)
             )
             .andExpect(status().isOk())
             .andExpect(view().name("index"))

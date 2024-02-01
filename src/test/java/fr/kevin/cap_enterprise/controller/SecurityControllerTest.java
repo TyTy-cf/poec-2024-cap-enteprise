@@ -7,9 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -25,9 +27,21 @@ public class SecurityControllerTest {
     }
 
     @Test
+    public void testModelAndViewLogin() throws Exception {
+        mockMvc.perform(get("/login").with(anonymous()))
+            .andExpect(view().name("security/login"));
+    }
+
+    @Test
     public void testAccessRegister() throws Exception {
         mockMvc.perform(get("/inscription"))
             .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testModelAndViewRegister() throws Exception {
+        mockMvc.perform(get("/inscription").with(anonymous()))
+                .andExpect(view().name("security/register"));
     }
 
     @Test
