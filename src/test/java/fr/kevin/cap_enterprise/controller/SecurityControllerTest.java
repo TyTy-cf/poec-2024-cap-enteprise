@@ -32,6 +32,15 @@ public class SecurityControllerTest {
     }
 
     @Test
+    public void testFormLogin() throws Exception {
+        mockMvc.perform(post("/login").with(anonymous())
+                        .param("username", "joyrider")
+                        .param("password", "12345")
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
     public void testAccessRegister() throws Exception {
         mockMvc.perform(get("/inscription"))
             .andExpect(status().isOk());
@@ -40,13 +49,15 @@ public class SecurityControllerTest {
     @Test
     public void testModelAndViewRegister() throws Exception {
         mockMvc.perform(get("/inscription").with(anonymous()))
-                .andExpect(view().name("security/register"));
+            .andExpect(view().name("security/register"));
     }
 
     @Test
     public void testFormRegister() throws Exception {
-        mockMvc.perform(post("/login").with(anonymous())
-            .param("username", "joyrider")
+        mockMvc.perform(post("/inscription").with(anonymous())
+            .param("nickname", "toto")
+            .param("email", "toto@gmail.com")
+            .param("birthedAt", "2000-10-10")
             .param("password", "12345")
             .with(csrf()))
             .andExpect(status().is3xxRedirection());
