@@ -143,7 +143,7 @@ public class GameController {
         return mav;
     }
 
-    @GetMapping(value = UrlRoute.URL_GAME_UPLOAD_IMAGE_PATH)
+    @GetMapping(UrlRoute.URL_GAME_UPLOAD_IMAGE_PATH)
     public ModelAndView uploadImage(
             ModelAndView mav,
             @PathVariable String slug
@@ -152,7 +152,7 @@ public class GameController {
         return mav;
     }
 
-    @PostMapping(value = UrlRoute.URL_GAME_UPLOAD_IMAGE_PATH)
+    @PostMapping(UrlRoute.URL_GAME_UPLOAD_IMAGE_PATH)
     public ModelAndView uploadImage(
         ModelAndView mav,
         @RequestParam("file") MultipartFile file,
