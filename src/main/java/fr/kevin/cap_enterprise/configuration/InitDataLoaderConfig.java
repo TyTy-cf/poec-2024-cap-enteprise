@@ -82,10 +82,14 @@ public class InitDataLoaderConfig implements CommandLineRunner {
                 }
                 user.setId(i);
                 String name;
-                do {
-                    name = slugger.slugify(faker.funnyName().name().replace(" ", ""));
-                } while (duplicates.contains(name));
-                duplicates.add(name);
+                if (i == 1) {
+                    name = "admin";
+                } else {
+                    do {
+                        name = slugger.slugify(faker.funnyName().name().replace(" ", ""));
+                    } while (duplicates.contains(name));
+                    duplicates.add(name);
+                }
                 user.setNickname(name);
                 user.setEmail(name + "@gmail.com");
                 user.setPassword(passwordEncoder.encode("12345"));

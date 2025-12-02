@@ -1,4 +1,4 @@
-package fr.kevin.cap_enterprise;
+package fr.kevin.cap_enterprise.utils;
 
 public class Constants {
 

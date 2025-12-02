@@ -4,7 +4,7 @@
 <jsp:include flush="true" page="../base.jsp"/>
 
 <div class="container">
-  <form method="POST" action="${UrlRoute.URL_LOGIN}" class="col-4 mx-auto mt-5">
+  <form method="POST" action="${UrlRoute.URL_LOGIN}" class="col-lg-4 col-md-6 col-sm-12 mx-auto mt-5">
     <h1 class="form-heading">Se connecter</h1>
     <div class="form-group ${error != null ? 'has-error' : ''}">
       <span>${message}</span>
