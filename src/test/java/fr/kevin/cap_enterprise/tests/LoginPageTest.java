@@ -3,9 +3,11 @@ package fr.kevin.cap_enterprise.tests;
 import fr.kevin.cap_enterprise.page.HomePage;
 import fr.kevin.cap_enterprise.page.LoginPage;
 import fr.kevin.cap_enterprise.utils.Constants;
+import io.qameta.allure.Description;
 import org.fluentlenium.adapter.junit.jupiter.FluentTest;
 import org.fluentlenium.configuration.FluentConfiguration;
 import org.fluentlenium.core.annotation.Page;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -29,7 +31,9 @@ public class LoginPageTest extends FluentTest {
     }
 
     @Test
-    void failed_login_should_redirect_to_login() {
+    @DisplayName("Test login OK")
+    @Description("Tester la redirection vers la page login, lors de l'échec de la connexion")
+    void testFailedLogin() {
         goTo(loginPage);
         loginPage.isAt();
         LoginPage page = loginPage
@@ -42,7 +46,9 @@ public class LoginPageTest extends FluentTest {
     }
 
     @Test
-    void successful_login_should_redirect_to_home() {
+    @DisplayName("Test login KO")
+    @Description("Tester la redirection vers la page d'acceuil, lors de la réussite de la connexion")
+    void testSuccessfulLogin() {
         goTo(loginPage);
         loginPage.isAt();
         loginPage.setUsername("admin")

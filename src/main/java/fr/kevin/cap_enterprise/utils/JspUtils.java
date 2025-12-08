@@ -44,10 +44,7 @@ public class JspUtils {
     // String... :  la méthode prend autant de paramètres de type String que voulu
     // Et les ajoute automatiquement dans une Liste
         UriComponentsBuilder url = UriComponentsBuilder.fromHttpUrl(currentUrl);
-        System.out.println("Generation d'URL...");
-        System.out.println("- URL actuelle  : " + currentUrl);
         for (String queryParam : addQueryParams) {
-            System.out.println("- Query param  : " + queryParam);
             if (!queryParam.isEmpty()) {
                 if (queryParam.contains("&")) { // existing old query param
                     String[] oldQueryParams = queryParam.split("&");
@@ -62,7 +59,6 @@ public class JspUtils {
             }
         }
         String urlOut = url.toUriString();
-        System.out.println("- URL en sortie : " + urlOut);
         return urlOut;
     }
 

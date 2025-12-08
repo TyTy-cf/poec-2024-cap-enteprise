@@ -2,9 +2,11 @@ package fr.kevin.cap_enterprise.controller;
 
 import fr.kevin.cap_enterprise.utils.Constants;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.junit5.AllureJunit5;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,6 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+@ExtendWith(AllureJunit5.class)
 public class HomeControllerTest {
 
     private WebDriver driver;
