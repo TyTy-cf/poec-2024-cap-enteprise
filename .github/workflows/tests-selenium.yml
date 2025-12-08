@@ -9,6 +9,23 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    services:
+      mariadb:
+        image: mariadb:11
+        env:
+          MARIADB_DATABASE: db_moment-jeux-test
+          MARIADB_USER: app
+          MARIADB_PASSWORD: app
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -uapp -papp"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
       - uses: actions/checkout@v4
 
@@ -24,6 +41,10 @@ jobs:
           sudo apt-get install -y google-chrome-stable
 
       - name: Run tests
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/db_moment-jeux-test
+          SPRING_DATASOURCE_USERNAME: app
+          SPRING_DATASOURCE_PASSWORD: app
         run: mvn clean test
 
       - name: Upload Allure results
