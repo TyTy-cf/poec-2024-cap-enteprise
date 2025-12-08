@@ -1,4 +1,4 @@
-ame: Selenium Tests
+name: Selenium Tests
 
 on:
   push:
