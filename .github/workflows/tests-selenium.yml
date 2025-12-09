@@ -46,7 +46,7 @@ jobs:
         run: |
           for i in {1..30}; do
             if mysqladmin ping -hlocalhost -uapp -papp --silent; then
-              echo "✅ MariaDB ready after ${i}s"
+              echo "MariaDB ready after ${i}s"
               break
             fi
             echo "MariaDB wait ${i}/30..."
@@ -60,7 +60,7 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: app
         run: |
           echo "=== Starting Spring Boot ==="
-          timeout 120 mvn spring-boot:run -Dspring-boot.run.profiles=test -Dserver.port=8080 > app.log 2>&1 &
+          timeout 180 mvn spring-boot:run -Dspring-boot.run.profiles=test -Dserver.port=8080 > app.log 2>&1 &
           APP_PID=$!
           echo "App PID: $APP_PID"
           
@@ -74,7 +74,7 @@ jobs:
             HTTP_CODE=$(curl -s -w "%{http_code}" http://localhost:8080/actuator/health || echo 000)
             echo "Wait $((i*5))s... Status: $HTTP_CODE"
             if [ "$HTTP_CODE" = "200" ]; then
-              echo "✅ App ready on port 8080!"
+              echo "App ready on port 8080!"
               break
             fi
           done
