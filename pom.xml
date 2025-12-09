@@ -165,21 +165,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.2.5</version>
-				<configuration>
-					<systemPropertyVariables>
-						<webdriver.chrome.args>--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --window-size=1920x1080</webdriver.chrome.args>
-						<fluentlenium.headless>true</fluentlenium.headless>
-						<CI>true</CI>
-					</systemPropertyVariables>
-					<forkCount>1</forkCount>
-					<reuseForks>false</reuseForks>
-					<argLine>-Xmx2G --add-opens java.base/java.util=ALL-UNNAMED</argLine>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>io.qameta.allure</groupId>
 				<artifactId>allure-maven</artifactId>
 				<version>2.12.0</version>
