@@ -42,18 +42,47 @@ jobs:
           install-chromedriver: true
           install-dependencies: true
 
-      - name: Start Spring Boot App
+      - name: Wait for MariaDB
+        run: |
+          for i in {1..30}; do
+            if mysqladmin ping -hlocalhost -uapp -papp --silent; then
+              echo "✅ MariaDB ready after ${i}s"
+              break
+            fi
+            echo "MariaDB wait ${i}/30..."
+            sleep 2
+          done
+
+      - name: Start Spring Boot App + DEBUG
         env:
           SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/db_moment-jeux-test
           SPRING_DATASOURCE_USERNAME: app
           SPRING_DATASOURCE_PASSWORD: app
         run: |
-          nohup mvn spring-boot:run -Dspring-boot.run.profiles=test -Dserver.port=8080 &
+          echo "=== Starting Spring Boot ==="
+          timeout 120 mvn spring-boot:run -Dspring-boot.run.profiles=test -Dserver.port=8080 > app.log 2>&1 &
           APP_PID=$!
           echo "App PID: $APP_PID"
-          sleep 30
-          curl -f http://localhost:8080/actuator/health || echo "App not ready yet"
-          echo $APP_PID > app.pid      
+          
+          echo "=== App logs (first 50 lines) ==="
+          sleep 10
+          tail -50 app.log
+          
+          echo "=== Waiting for app (max 120s) ==="
+          for i in {1..24}; do
+            sleep 5
+            HTTP_CODE=$(curl -s -w "%{http_code}" http://localhost:8080/actuator/health || echo 000)
+            echo "Wait $((i*5))s... Status: $HTTP_CODE"
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "✅ App ready on port 8080!"
+              break
+            fi
+          done
+          
+          echo "=== Final status ==="
+          ps aux | grep spring-boot || echo "No Spring Boot process"
+          netstat -tlnp | grep 8080 || echo "Port 8080 NOT listening"
+          echo $APP_PID > app.pid
 
       - name: Run tests
         env:
@@ -63,6 +92,14 @@ jobs:
           MAVEN_OPTS: "-Xmx2G"
         run: mvn clean test -Dchrome.options="--disable-dev-shm-usage --no-sandbox --headless=new --disable-gpu --window-size=1920,1080"
 
+      - name: Stop Spring Boot
+        if: always()
+        run: |
+          if [ -f app.pid ]; then
+            kill $(cat app.pid) || true
+            echo "Spring Boot killed"
+          fi
+
       - name: Show failing test details
         if: failure()
         run: |
@@ -70,11 +107,19 @@ jobs:
           find target/surefire-reports -type f -maxdepth 1 -print
           echo "=== First report ==="
           sed -n '1,200p' target/surefire-reports/*.txt || echo "no txt reports"
+          echo "=== App final logs ==="
+          cat app.log || echo "No app.log"
+
+      - name: Upload app logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spring-boot-logs
+          path: app.log
 
       - name: Generate Allure Report
         if: success()
-        run: |
-          mvn allure:report
+        run: mvn allure:report
 
       - name: Upload Allure Report
         if: success()
@@ -98,12 +143,4 @@ jobs:
       - name: Print URL
         if: always()
         run: |
-          echo "Results: https://tyty-cf.github.io/poec-2024-cap-enteprise/allure-reports/${{ github.run_number }}"
-      
-
-
-
-
-
-
-
+          echo "Results: https://tyty-cf.github.io/poec-2024-cap-enteprise/allure-reports/${{ github.run_number }}/ (deployed only if tests PASS)"
