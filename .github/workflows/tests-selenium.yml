@@ -35,17 +35,18 @@ jobs:
           distribution: 'temurin'
           java-version: '20'
 
-      - name: Install Chrome
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
+      - name: Setup Chrome & ChromeDriver
+        uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: stable
 
       - name: Run tests
         env:
           SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/db_moment-jeux-test
           SPRING_DATASOURCE_USERNAME: app
           SPRING_DATASOURCE_PASSWORD: app
-        run: mvn clean test
+          SELENIUM_ARGS: "--headless --no-sandbox --disable-dev-shm-usage --disable-gpu --window-size=1920,1080 --remote-debugging-port=9222"
+        run: mvn clean test -Dwebdriver.chrome.args="$SELENIUM_ARGS"
 
       - name: Upload Allure results
         if: always()
