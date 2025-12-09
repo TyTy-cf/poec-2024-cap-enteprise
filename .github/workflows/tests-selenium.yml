@@ -45,7 +45,8 @@ jobs:
           SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/db_moment-jeux-test
           SPRING_DATASOURCE_USERNAME: app
           SPRING_DATASOURCE_PASSWORD: app
-          MAVEN_OPTS: "-Xmx2G -Dwebdriver.chrome.verboseLogging=true -Dwebdriver.chrome.logfile=/tmp/chromedriver.log"
+          MAVEN_OPTS: "-Xmx2G"
+          webdriver.chrome.args: "--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --window-size=1920,1080 --remote-allow-origins=*"
         run: |
           mvn clean test -e -X -Dsurefire.rerunFailingTestsCount=0 || true
           
@@ -76,7 +77,7 @@ jobs:
       - name: Print URLs
         if: always()
         run: |
-          echo "Results: https://tyty-cf.github.io/poec-2024-cap-enteprise/allure-reports/${{ github.run_number }}
+          echo "Results: https://tyty-cf.github.io/poec-2024-cap-enteprise/allure-reports/${{ github.run_number }}"
       
 
 
