@@ -50,6 +50,14 @@ jobs:
           MAVEN_OPTS: "-Xmx2G"
         run: mvn clean test "-Dchrome.options=--disable-dev-shm-usage --no-sandbox --headless=new --disable-gpu --window-size=1920,1080 --remote-allow-origins=*"
 
+      - name: Show failing test details
+        if: failure()
+        run: |
+          echo "=== Surefire reports ==="
+          find target/surefire-reports -type f -maxdepth 1 -print
+          echo "=== First report ==="
+          sed -n '1,200p' target/surefire-reports/*.txt || echo "no txt reports"
+
       - name: Generate Allure Report
         if: success()
         run: |
