@@ -42,6 +42,19 @@ jobs:
           install-chromedriver: true
           install-dependencies: true
 
+      - name: Start Spring Boot App
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/db_moment-jeux-test
+          SPRING_DATASOURCE_USERNAME: app
+          SPRING_DATASOURCE_PASSWORD: app
+        run: |
+          nohup mvn spring-boot:run -Dspring-boot.run.profiles=test -Dserver.port=8080 &
+          APP_PID=$!
+          echo "App PID: $APP_PID"
+          sleep 30
+          curl -f http://localhost:8080/actuator/health || echo "App not ready yet"
+          echo $APP_PID > app.pid      
+
       - name: Run tests
         env:
           SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/db_moment-jeux-test
