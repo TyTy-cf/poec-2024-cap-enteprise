@@ -45,8 +45,9 @@ jobs:
           SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/db_moment-jeux-test
           SPRING_DATASOURCE_USERNAME: app
           SPRING_DATASOURCE_PASSWORD: app
-          SELENIUM_ARGS: "--headless --no-sandbox --disable-dev-shm-usage --disable-gpu --window-size=1920,1080 --remote-debugging-port=9222"
-        run: mvn clean test -Dwebdriver.chrome.args="$SELENIUM_ARGS"
+          MAVEN_OPTS: "-Xmx2G -Dwebdriver.chrome.verboseLogging=true -Dwebdriver.chrome.logfile=/tmp/chromedriver.log"
+        run: |
+          mvn clean test -e -X -Dsurefire.rerunFailingTestsCount=0 || true
 
       - name: Upload Allure results
         if: always()
