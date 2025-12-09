@@ -62,7 +62,14 @@ jobs:
           path: |
             target/site/allure-maven-plugin/
             target/allure-results/
-      
+
+      - name: Deploy Allure Report (online)
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/site/allure-maven-plugin/
+          destination_dir: ./allure-reports/${{ github.run_number }}
 
 
 
