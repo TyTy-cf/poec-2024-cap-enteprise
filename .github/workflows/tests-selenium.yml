@@ -39,6 +39,7 @@ jobs:
         uses: browser-actions/setup-chrome@v2
         with:
           chrome-version: stable
+          install-chromedriver: true
 
       - name: Run tests
         env:
@@ -46,11 +47,11 @@ jobs:
           SPRING_DATASOURCE_USERNAME: app
           SPRING_DATASOURCE_PASSWORD: app
           MAVEN_OPTS: "-Xmx2G"
-          webdriver.chrome.args: "--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --window-size=1920,1080 --remote-allow-origins=*"
+          webdriver.chrome.args: "--disable-dev-shm-usage --no-sandbox --headless --disable-gpu --window-size=1920,1080 --remote-allow-origins=*"
         run: |
           mvn clean test -e -X -Dsurefire.rerunFailingTestsCount=0 || true
           
-      - name: Generate Allure Report (Maven)
+      - name: Generate Allure Report
         if: success()
         run: |
           mvn allure:report
@@ -74,7 +75,7 @@ jobs:
           destination_dir: ./allure-reports/${{ github.run_number }}
           force_orphan: true
 
-      - name: Print URLs
+      - name: Print URL
         if: always()
         run: |
           echo "Results: https://tyty-cf.github.io/poec-2024-cap-enteprise/allure-reports/${{ github.run_number }}"
