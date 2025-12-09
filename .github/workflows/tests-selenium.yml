@@ -48,7 +48,7 @@ jobs:
           SPRING_DATASOURCE_USERNAME: app
           SPRING_DATASOURCE_PASSWORD: app
           MAVEN_OPTS: "-Xmx2G"
-        run: mvn clean test "-Dchrome.options=--disable-dev-shm-usage --no-sandbox --headless=new --disable-gpu --window-size=1920,1080 --remote-allow-origins=*"
+        run: mvn clean test -Dchrome.options="--disable-dev-shm-usage --no-sandbox --headless=new --disable-gpu --window-size=1920,1080"
 
       - name: Show failing test details
         if: failure()

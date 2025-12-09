@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -24,8 +25,20 @@ public class HomeControllerTest {
     @BeforeEach
     public void setUp() {
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
+
+        String extraOptions = System.getProperty("chrome.options");
+        if (extraOptions != null && !extraOptions.isBlank()) {
+            for (String arg : extraOptions.split("\\s+")) {
+                options.addArguments(arg);
+            }
+        }
+
+        driver = new ChromeDriver(options);
     }
+
 
     @AfterEach
     public void tearDown() {
