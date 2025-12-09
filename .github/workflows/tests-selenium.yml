@@ -53,7 +53,6 @@ jobs:
         if: success()
         run: |
           mvn allure:report
-          echo "Report generated in: $(find target/site/ -name 'index.html' | head -1)"
 
       - name: Upload Allure Report
         if: success()
@@ -73,6 +72,12 @@ jobs:
           publish_branch: gh-pages
           destination_dir: ./allure-reports/${{ github.run_number }}
           force_orphan: true
+
+      - name: Print URLs
+        if: always()
+        run: |
+          echo "Results: https://tyty-cf.github.io/poec-2024-cap-enteprise/allure-reports/${{ github.run_number }}
+      
 
 
 
