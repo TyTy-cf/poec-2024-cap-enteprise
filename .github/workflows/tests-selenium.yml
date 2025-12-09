@@ -50,13 +50,13 @@ jobs:
           mvn clean test -e -X -Dsurefire.rerunFailingTestsCount=0 || true
           
       - name: Generate Allure Report (Maven)
-        if: always()
+        if: success()
         run: |
           mvn allure:report
           echo "Report generated in: $(find target/site/ -name 'index.html' | head -1)"
 
       - name: Upload Allure Report
-        if: always()
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
@@ -65,7 +65,7 @@ jobs:
             target/allure-results/
 
       - name: Deploy Allure Report to GitHub Pages
-        if: always()
+        if: success()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
