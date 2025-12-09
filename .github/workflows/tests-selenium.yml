@@ -49,9 +49,31 @@ jobs:
         run: |
           mvn clean test -e -X -Dsurefire.rerunFailingTestsCount=0 || true
 
-      - name: Upload Allure results
+      - name: Install Allure CLI
+        if: always()
+        run: |
+          wget https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
+          unzip allure-2.27.0.zip
+          echo "$GITHUB_WORKSPACE/allure-2.27.0/bin" >> $GITHUB_PATH
+
+      - name: Generate Allure Report
+        if: always()
+        run: |
+          sudo apt-get install -y default-jdk
+          wget https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
+          unzip allure-2.27.0.zip
+          export PATH=$PWD/allure-2.27.0/bin:$PATH
+          mkdir -p allure-report
+          allure generate target/allure-results/ -o allure-report --clean
+
+      - name: Upload Allure Report HTML
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results
-          path: target/allure-results/
+          name: allure-report-html
+          path: allure-report/
+
+
+
+
+
