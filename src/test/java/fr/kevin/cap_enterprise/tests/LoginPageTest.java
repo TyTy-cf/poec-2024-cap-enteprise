@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,7 +28,18 @@ public class LoginPageTest extends FluentTest {
     @Override
     public WebDriver newWebDriver() {
         WebDriverManager.chromedriver().setup();
-        return new ChromeDriver();
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
+
+        String extraOptions = System.getProperty("chrome.options");
+        if (extraOptions != null && !extraOptions.isBlank()) {
+            for (String arg : extraOptions.split("\\s+")) {
+                options.addArguments(arg);
+            }
+        }
+
+        return new ChromeDriver(options);
     }
 
     @Test
