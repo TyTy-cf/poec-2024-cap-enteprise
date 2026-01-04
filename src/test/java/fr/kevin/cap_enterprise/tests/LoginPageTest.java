@@ -29,6 +29,7 @@ public class LoginPageTest extends FluentTest {
     public WebDriver newWebDriver() {
         WebDriverManager.chromedriver().setup();
 
+
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
 
