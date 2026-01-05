@@ -125,27 +125,6 @@
 			<artifactId>webdrivermanager</artifactId>
 			<version>5.7.0</version>
 		</dependency>
-		<dependency>
-			<groupId>org.fluentlenium</groupId>
-			<artifactId>fluentlenium-core</artifactId>
-			<version>5.0.4</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.fluentlenium</groupId>
-			<artifactId>fluentlenium-junit-jupiter</artifactId>
-			<version>5.0.4</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- Rapport & logs -->
-		<dependency>
-			<groupId>io.qameta.allure</groupId>
-			<artifactId>allure-junit5</artifactId>
-			<version>2.21.0</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 
 	<build>
 		<plugins>
@@ -162,29 +141,6 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.2.5</version>
-				<configuration>
-					<systemPropertyVariables>
-						<CI>true</CI>
-						<chrome.options>
-							--disable-dev-shm-usage --no-sandbox --headless=new
-							--disable-gpu --window-size=1920,1080 --remote-allow-origins=*
-						</chrome.options>
-					</systemPropertyVariables>
-					<argLine>-Xmx2G</argLine>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>io.qameta.allure</groupId>
-				<artifactId>allure-maven</artifactId>
-				<version>2.12.0</version>
-				<configuration>
-					<reportVersion>2.27.0</reportVersion>
 				</configuration>
 			</plugin>
 		</plugins>
