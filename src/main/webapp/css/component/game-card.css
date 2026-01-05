@@ -1,0 +1,30 @@
+
+.main-game-card {
+    text-decoration: none;
+    color: #fff;
+}
+
+.main-game-card:hover {
+    color: #ff5400;
+}
+
+.game-card {
+    width: 100%;
+    height: 230px;
+}
+
+.game-card p {
+    margin-bottom: 0;
+}
+
+.game-card-img {
+    width: 100%;
+    height: 80%;
+}
+
+.game-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.5em;
+}
