@@ -7,11 +7,8 @@ import org.openqa.selenium.support.FindBy;
 
 import java.time.Duration;
 
-@PageUrl("/login")
+@PageUrl("https://opensource-demo.orangehrmlive.com/")
 public class LoginPage extends FluentPage {
-
-    @FindBy(css = "h1.form-heading")
-    private FluentWebElement loginMessage;
 
     @FindBy(name = "username")
     private FluentWebElement usernameInput;
@@ -21,14 +18,6 @@ public class LoginPage extends FluentPage {
 
     @FindBy(css = "button[type='submit']")
     private FluentWebElement submitButton;
-
-    @FindBy(css = "p.invalid-feedback")
-    private FluentWebElement errorMessage;
-
-    @Override
-    public void isAt() {
-        await().atMost(Duration.ofSeconds(10)).until(loginMessage).displayed();
-    }
 
     public LoginPage setUsername(String username) {
         usernameInput.fill().with(username);
@@ -43,10 +32,6 @@ public class LoginPage extends FluentPage {
     public LoginPage submit() {
         submitButton.click();
         return this;
-    }
-
-    public boolean isErrorMessageDisplayed() {
-        return errorMessage.displayed();
     }
 
 }
