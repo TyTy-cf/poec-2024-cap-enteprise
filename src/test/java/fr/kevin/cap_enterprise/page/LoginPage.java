@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 
 import java.time.Duration;
 
-@PageUrl("https://opensource-demo.orangehrmlive.com/")
+@PageUrl("/web/index.php/auth/login")
 public class LoginPage extends FluentPage {
 
     @FindBy(name = "username")
@@ -19,19 +19,42 @@ public class LoginPage extends FluentPage {
     @FindBy(css = "button[type='submit']")
     private FluentWebElement submitButton;
 
-    public LoginPage setUsername(String username) {
+    @FindBy(className = "orangehrm-login-slot")
+    private FluentWebElement loginPanel;
+
+    @Override
+    public void isAt() {
+        await().atMost(Duration.ofSeconds(10))
+                .until(loginPanel).displayed();
+    }
+
+    public LoginPage fillUsername(String username) {
+        await().atMost(Duration.ofSeconds(10))
+                .until(usernameInput).clickable();
         usernameInput.fill().with(username);
         return this;
     }
 
-    public LoginPage setPassword(String password) {
+    public LoginPage fillPassword(String password) {
+        await().atMost(Duration.ofSeconds(10))
+                .until(passwordInput).clickable();
         passwordInput.fill().with(password);
         return this;
     }
 
-    public LoginPage submit() {
+    public void submit() {
+        await().atMost(Duration.ofSeconds(10))
+                .until(submitButton).clickable();
         submitButton.click();
-        return this;
     }
 
+    public HomePage submitExpectingSuccess() {
+        submit();
+        return newInstance(HomePage.class);
+    }
+
+    public LoginPage submitExpectingFailure() {
+        submit();
+        return this;
+    }
 }
