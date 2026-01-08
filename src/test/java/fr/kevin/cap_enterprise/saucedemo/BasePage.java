@@ -36,8 +36,17 @@ public class BasePage {
         return waitUntil(locator).getText();
     }
 
+    public String getCurrentUrl() {
+        return driver.getCurrentUrl();
+    }
+
+    public boolean isDisplayed(By locator) {
+        return waitUntil(locator).isDisplayed();
+    }
+
     protected void type(By locator, String text) {
         WebElement element = waitClickable(locator);
+        element.click();
         element.clear();
         element.sendKeys(text);
     }
