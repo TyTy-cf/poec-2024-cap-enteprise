@@ -1,6 +1,6 @@
-package fr.kevin.cap_enterprise.saucedemo.page;
+package fr.kevin.cap_enterprise.gog.page;
 
-import fr.kevin.cap_enterprise.saucedemo.BasePage;
+import fr.kevin.cap_enterprise.gog.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

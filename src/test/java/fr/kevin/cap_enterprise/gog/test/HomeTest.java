@@ -1,8 +1,8 @@
-package fr.kevin.cap_enterprise.saucedemo.test;
+package fr.kevin.cap_enterprise.gog.test;
 
-import fr.kevin.cap_enterprise.saucedemo.BaseTest;
-import fr.kevin.cap_enterprise.saucedemo.page.HomePage;
-import fr.kevin.cap_enterprise.saucedemo.page.SearchResultsPage;
+import fr.kevin.cap_enterprise.gog.BaseTest;
+import fr.kevin.cap_enterprise.gog.page.HomePage;
+import fr.kevin.cap_enterprise.gog.page.SearchResultsPage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -1,4 +1,4 @@
-package fr.kevin.cap_enterprise.saucedemo;
+package fr.kevin.cap_enterprise.gog;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

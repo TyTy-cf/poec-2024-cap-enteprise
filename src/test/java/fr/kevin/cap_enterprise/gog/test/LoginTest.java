@@ -1,7 +1,7 @@
-package fr.kevin.cap_enterprise.saucedemo.test;
+package fr.kevin.cap_enterprise.gog.test;
 
-import fr.kevin.cap_enterprise.saucedemo.BaseTest;
-import fr.kevin.cap_enterprise.saucedemo.page.LoginPage;
+import fr.kevin.cap_enterprise.gog.BaseTest;
+import fr.kevin.cap_enterprise.gog.page.LoginPage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
