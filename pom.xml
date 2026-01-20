@@ -16,6 +16,9 @@
 	<description>Cap enterprise HB POEC 2024 - By Kevin</description>
 	<properties>
 		<java.version>20</java.version>
+		<aspectj.version>
+			1.9.21
+		</aspectj.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -124,6 +127,11 @@
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
 			<version>5.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.qameta.allure</groupId>
+			<artifactId>allure-junit5</artifactId>
+			<version>2.21.0</version>
 		</dependency>
 	</dependencies>
 
