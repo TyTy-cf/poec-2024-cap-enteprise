@@ -15,32 +15,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: ☕ Set up JDK 21
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '21'
           cache: 'maven'
 
-      - name: 🌐 Setup Chrome
+      - name: Setup Chrome
         uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: stable
 
-      - name: 🔍 Display Chrome version
+      - name: Display Chrome version
         run: |
           google-chrome --version
           which google-chrome
 
-      - name: 🧪 Run tests with Maven
+      - name: Run tests with Maven
         run: mvn clean test
         env:
           HEADLESS: true
 
-      - name: 📊 Generate Allure Report
+      - name: Generate Allure Report
         if: always()
         uses: simple-elf/allure-report-action@v1.7
         with:
@@ -48,10 +48,10 @@ jobs:
           allure_history: allure-history
           keep_reports: 20
 
-      - name: 📤 Deploy Allure report to GitHub Pages
+      - name: Deploy Allure report to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
+          publish_branch: test2
           publish_dir: allure-history
