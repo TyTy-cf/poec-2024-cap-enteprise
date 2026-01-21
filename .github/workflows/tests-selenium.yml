@@ -1,146 +1,57 @@
-name: Selenium Tests
+name: Selenium Tests with Allure Report
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - develop
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      mariadb:
-        image: mariadb:11
-        env:
-          MARIADB_DATABASE: db_moment-jeux-test
-          MARIADB_USER: app
-          MARIADB_PASSWORD: app
-          MARIADB_ROOT_PASSWORD: root
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="healthcheck.sh --connect --innodb_initialized"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
     steps:
-      - uses: actions/checkout@v4
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up JDK 20
+      - name: ☕ Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '20'
+          java-version: '21'
+          cache: 'maven'
 
-      - name: Setup Chrome & ChromeDriver
-        uses: browser-actions/setup-chrome@v2
+      - name: 🌐 Setup Chrome
+        uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: stable
-          install-chromedriver: true
-          install-dependencies: true
 
-      - name: Wait for MariaDB
+      - name: 🔍 Display Chrome version
         run: |
-          for i in {1..30}; do
-            if mysqladmin ping -hlocalhost -uapp -papp --silent; then
-              echo "MariaDB ready after ${i}s"
-              break
-            fi
-            echo "MariaDB wait ${i}/30..."
-            sleep 2
-          done
+          google-chrome --version
+          which google-chrome
 
-      - name: Start Spring Boot App + DEBUG
+      - name: 🧪 Run tests with Maven
+        run: mvn clean test
         env:
-          SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/db_moment-jeux-test
-          SPRING_DATASOURCE_USERNAME: app
-          SPRING_DATASOURCE_PASSWORD: app
-        run: |
-          echo "=== Starting Spring Boot ==="
-          timeout 180 mvn spring-boot:run -Dspring-boot.run.profiles=test -Dserver.port=8080 > app.log 2>&1 &
-          APP_PID=$!
-          echo "App PID: $APP_PID"
-          
-          echo "=== App logs (first 50 lines) ==="
-          sleep 10
-          tail -50 app.log
-          
-          echo "=== Waiting for app (max 120s) ==="
-          for i in {1..24}; do
-            sleep 5
-            HTTP_CODE=$(curl -s -w "%{http_code}" http://localhost:8080/actuator/health || echo 000)
-            echo "Wait $((i*5))s... Status: $HTTP_CODE"
-            if [ "$HTTP_CODE" = "200" ]; then
-              echo "App ready on port 8080!"
-              break
-            fi
-          done
-          
-          echo "=== Final status ==="
-          ps aux | grep spring-boot || echo "No Spring Boot process"
-          netstat -tlnp | grep 8080 || echo "Port 8080 NOT listening"
-          echo $APP_PID > app.pid
+          HEADLESS: true
 
-      - name: Run tests
-        env:
-          SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/db_moment-jeux-test
-          SPRING_DATASOURCE_USERNAME: app
-          SPRING_DATASOURCE_PASSWORD: app
-          MAVEN_OPTS: "-Xmx2G"
-        run: mvn clean test -Dchrome.options="--disable-dev-shm-usage --no-sandbox --headless=new --disable-gpu --window-size=1920,1080"
-
-      - name: Stop Spring Boot
+      - name: 📊 Generate Allure Report
         if: always()
-        run: |
-          if [ -f app.pid ]; then
-            kill $(cat app.pid) || true
-            echo "Spring Boot killed"
-          fi
+        uses: simple-elf/allure-report-action@v1.7
+        with:
+          allure_results: target/allure-results
+          allure_history: allure-history
+          keep_reports: 20
 
-      - name: Show failing test details
-        if: failure()
-        run: |
-          echo "=== Surefire reports ==="
-          find target/surefire-reports -type f -maxdepth 1 -print
-          echo "=== First report ==="
-          sed -n '1,200p' target/surefire-reports/*.txt || echo "no txt reports"
-          echo "=== App final logs ==="
-          cat app.log || echo "No app.log"
-
-      - name: Upload app logs
+      - name: 📤 Deploy Allure report to GitHub Pages
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: spring-boot-logs
-          path: app.log
-
-      - name: Generate Allure Report
-        if: success()
-        run: mvn allure:report
-
-      - name: Upload Allure Report
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report
-          path: |
-            target/site/allure-maven-plugin/
-            target/allure-results/
-
-      - name: Deploy Allure Report to GitHub Pages
-        if: success()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./target/site/allure-maven-plugin/
           publish_branch: gh-pages
-          destination_dir: ./allure-reports/${{ github.run_number }}
-          force_orphan: true
-
-      - name: Print URL
-        if: always()
-        run: |
-          echo "Results: https://tyty-cf.github.io/poec-2024-cap-enteprise/allure-reports/${{ github.run_number }}/ (deployed only if tests PASS)"
+          publish_dir: allure-history
