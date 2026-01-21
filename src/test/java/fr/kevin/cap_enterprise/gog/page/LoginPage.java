@@ -15,7 +15,7 @@ public class LoginPage extends BasePage {
     }
 
     public void login(String username, String password) {
-        goTo(ROOT_URL + "/login");
+        goTo(ROOT_URL + "login");
         type(usernameField, username);
         type(passwordField, password);
         waitClickable(submitButton).click();
