@@ -24,8 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserService implements
         DAOFindByIdInterface<User>,
-        UserDetailsService
-{
+        UserDetailsService {
 
     private UserRepository userRepository;
 

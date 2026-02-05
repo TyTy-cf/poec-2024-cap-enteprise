@@ -9,6 +9,7 @@ public class HomePage extends BasePage {
 
     private final By searchBtn = By.cssSelector("a[hook-test='menuSearch']");
     private final By searchBar = By.cssSelector("input[hook-test='menuSearchInput']");
+    private final By cartBtn = By.cssSelector("a[hook-test='menuCartButton']");
 
     public HomePage(WebDriver driver) {
         super(driver);
