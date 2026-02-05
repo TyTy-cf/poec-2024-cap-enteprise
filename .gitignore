@@ -30,8 +30,12 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
+<<<<<<< HEAD
 .vscode/
 
 ### Allure ###
 allure-results/
 .allure
+=======
+.vscode/
+>>>>>>> 81619fe9b289a9d520e2d8a5230bcea20b990b8e
